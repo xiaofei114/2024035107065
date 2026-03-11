@@ -1,0 +1,5 @@
+node_modules
+logs/*
+pnpm-lock.yaml
+.vscode
+pnpm-workspace.yaml

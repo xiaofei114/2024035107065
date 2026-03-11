@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜数字游戏 - 多人对战</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: background 0.5s ease;
+        }
+        
+        /* 难度主题 */
+        body.easy {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+        
+        body.normal {
+            background: linear-gradient(135deg, #ffeb3b 0%, #fbc02d 100%);
+        }
+        
+        body.hard {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+        
+        .difficulty-selector {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .difficulty-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .difficulty-btn {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .difficulty-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .difficulty-btn.easy-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .difficulty-btn.normal-btn {
+            background: #ffeb3b;
+            color: #333;
+        }
+        
+        .difficulty-btn.hard-btn {
+            background: #f44336;
+            color: white;
+        }
+        
+        .current-difficulty {
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            font-weight: bold;
+        }
+        
+        .game-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .score {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f0f0f0;
+        }
+        
+        .stars {
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+        
+        .best-record {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+        
+        .game-info {
+            margin-bottom: 20px;
+        }
+        
+        .guess-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .guess-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .guess-btn {
+            background: #667eea;
+            color: white;
+        }
+        
+        .guess-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .message {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        .history {
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .history h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .history-list {
+            list-style: none;
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        
+        .history-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .history-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        /* 多人对战样式 */
+        .multiplayer-section {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f0f0f0;
+        }
+        
+        .room-info {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: white;
+        }
+        
+        .qr-code {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .qr-code img {
+            max-width: 200px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .player-list {
+            margin: 15px 0;
+        }
+        
+        .player-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .player-status {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status-waiting {
+            background: #ffeb3b;
+            color: #333;
+        }
+        
+        .status-ready {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .status-playing {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .game-controls {
+            margin: 20px 0;
+        }
+        
+        .ready-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .ready-btn:hover {
+            background: #45a049;
+        }
+        
+        .restart-btn {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .restart-btn:hover {
+            background: #f57c00;
+        }
+        
+        .turn-indicator {
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 8px;
+            background: #2196F3;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .winner-indicator {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: #4CAF50;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>猜数字游戏</h1>
+        
+        <!-- 多人对战部分 -->
+        <div class="multiplayer-section">
+            <h3>多人对战</h3>
+            
+            <!-- 房间创建和加入 -->
+            <div class="room-actions">
+                <button id="create-room-btn" class="guess-btn">创建房间</button>
+                <div style="margin: 10px 0;">
+                    <input type="text" id="room-id-input" placeholder="输入房间号" style="padding: 10px; border-radius: 8px; border: 1px solid #ddd; margin-right: 10px;">
+                    <button id="join-room-btn" class="reset-btn">加入房间</button>
+                </div>
+            </div>
+            
+            <!-- 房间信息 -->
+            <div id="room-info" class="room-info" style="display: none;">
+                <h4>房间信息</h4>
+                <p>房间号: <span id="room-id-display"></span></p>
+                <p>当前难度: <span id="difficulty-display">普通</span></p>
+                <div id="host-controls" style="margin: 10px 0; display: none;">
+                    <h5>房主控制</h5>
+                    <div class="difficulty-buttons" style="justify-content: flex-start;">
+                        <button class="difficulty-btn easy-btn" style="flex: none;">简单(1-50)</button>
+                        <button class="difficulty-btn normal-btn" style="flex: none;">普通(1-100)</button>
+                        <button class="difficulty-btn hard-btn" style="flex: none;">困难(1-500)</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 二维码 -->
+            <div id="qr-code" class="qr-code" style="display: none;">
+                <h4>邀请好友</h4>
+                <img id="qr-code-img" src="" alt="房间二维码">
+                <p>扫描二维码加入房间</p>
+            </div>
+            
+            <!-- 玩家列表 -->
+            <div class="player-list">
+                <h4>玩家列表</h4>
+                <div id="player-list-container"></div>
+            </div>
+            
+            <!-- 游戏控制 -->
+            <div class="game-controls">
+                <button id="ready-btn" class="ready-btn" style="display: none;">准备</button>
+                <button id="restart-btn" class="restart-btn" style="display: none;">再来一局</button>
+            </div>
+            
+            <!-- 回合指示器 -->
+            <div id="turn-indicator" class="turn-indicator" style="display: none;"></div>
+            
+            <!-- 获胜者显示 -->
+            <div id="winner-indicator" class="winner-indicator" style="display: none;"></div>
+        </div>
+        
+        <!-- 游戏部分 -->
+        <div class="game-info">
+            <p>请猜一个<span id="range-display">1-100</span>之间的数字</p>
+        </div>
+        <input type="number" class="guess-input" min="1" max="100" placeholder="输入数字" disabled>
+        <div class="buttons">
+            <button class="guess-btn" id="main-guess-btn" disabled>猜一猜</button>
+        </div>
+        <div class="message"></div>
+        <div class="score" style="display: none;">
+            <h3>评分</h3>
+            <div class="stars"></div>
+            <p class="score-text"></p>
+        </div>
+        <div class="history">
+            <h3>历史猜测</h3>
+            <ul class="history-list"></ul>
+        </div>
+        <div class="best-record">
+            <h3>最佳记录</h3>
+            <p>最少猜测次数: <span id="best-score">--</span></p>
+        </div>
+    </div>
+    
+    <script>
+        // 游戏变量
+        let ws;
+        let playerId;
+        let roomId;
+        let isHost = false;
+        let gameActive = false;
+        let currentPlayer = null;
+        let difficulty = 'normal';
+        const difficultyRanges = {
+            easy: 50,
+            normal: 100,
+            hard: 500
+        };
+        
+        // 音频上下文
+        let audioContext;
+        
+        // DOM元素
+        const guessInput = document.querySelector('.guess-input');
+        const guessBtn = document.getElementById('main-guess-btn');
+        const message = document.querySelector('.message');
+        const historyList = document.querySelector('.history-list');
+        const scoreDiv = document.querySelector('.score');
+        const starsDiv = document.querySelector('.stars');
+        const scoreText = document.querySelector('.score-text');
+        const bestScoreElement = document.getElementById('best-score');
+        const difficultyDisplay = document.getElementById('difficulty-display');
+        const rangeDisplay = document.getElementById('range-display');
+        const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+        const easyBtn = document.querySelector('.easy-btn');
+        const normalBtn = document.querySelector('.normal-btn');
+        const hardBtn = document.querySelector('.hard-btn');
+        
+        // 多人对战元素
+        const createRoomBtn = document.getElementById('create-room-btn');
+        const joinRoomBtn = document.getElementById('join-room-btn');
+        const roomIdInput = document.getElementById('room-id-input');
+        const roomInfo = document.getElementById('room-info');
+        const roomIdDisplay = document.getElementById('room-id-display');
+        const hostControls = document.getElementById('host-controls');
+        const qrCode = document.getElementById('qr-code');
+        const qrCodeImg = document.getElementById('qr-code-img');
+        const playerListContainer = document.getElementById('player-list-container');
+        const readyBtn = document.getElementById('ready-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const turnIndicator = document.getElementById('turn-indicator');
+        const winnerIndicator = document.getElementById('winner-indicator');
+        
+        // 初始化音频上下文
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+        
+        // 生成点击提示音
+        function playClickSound() {
+            initAudioContext();
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+        
+        // 生成胜利音效
+        function playWinSound() {
+            initAudioContext();
+            
+            // 胜利音效由多个音符组成
+            const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+            
+            notes.forEach((frequency, index) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime + index * 0.15);
+                
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime + index * 0.15);
+                gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + index * 0.15 + 0.05);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + index * 0.15 + 0.1);
+                
+                oscillator.start(audioContext.currentTime + index * 0.15);
+                oscillator.stop(audioContext.currentTime + index * 0.15 + 0.1);
+            });
+        }
+        
+        // 连接WebSocket
+        function connectWebSocket() {
+            // 从URL中获取房间号
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlRoomId = urlParams.get('room');
+            
+            // 连接到WebSocket服务器
+            ws = new WebSocket(`ws://${window.location.hostname}:8080`);
+            
+            ws.onopen = function() {
+                console.log('WebSocket connected');
+                
+                // 如果URL中有房间号，自动加入
+                if (urlRoomId) {
+                    joinRoom(urlRoomId);
+                }
+            };
+            
+            ws.onmessage = function(event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    handleWebSocketMessage(data);
+                } catch (error) {
+                    console.error('Error parsing WebSocket message:', error);
+                }
+            };
+            
+            ws.onclose = function() {
+                console.log('WebSocket disconnected');
+                showMessage('与服务器断开连接，请刷新页面重试', 'red');
+            };
+            
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+                showMessage('连接服务器失败，请刷新页面重试', 'red');
+            };
+        }
+        
+        // 处理WebSocket消息
+        function handleWebSocketMessage(data) {
+            switch (data.type) {
+                case 'roomCreated':
+                    handleRoomCreated(data);
+                    break;
+                case 'joinedAsPlayer':
+                    handleJoinedAsPlayer(data);
+                    break;
+                case 'joinedAsSpectator':
+                    handleJoinedAsSpectator(data);
+                    break;
+                case 'playerJoined':
+                    handlePlayerJoined(data);
+                    break;
+                case 'playerLeft':
+                    handlePlayerLeft(data);
+                    break;
+                case 'difficultySet':
+                    handleDifficultySet(data);
+                    break;
+                case 'playerReady':
+                    handlePlayerReady(data);
+                    break;
+                case 'gameStarted':
+                    handleGameStarted(data);
+                    break;
+                case 'yourTurn':
+                    handleYourTurn();
+                    break;
+                case 'guessResult':
+                    handleGuessResult(data);
+                    break;
+                case 'gameRestarted':
+                    handleGameRestarted();
+                    break;
+                case 'becameHost':
+                    handleBecameHost();
+                    break;
+                case 'error':
+                    showMessage(data.message, 'red');
+                    break;
+            }
+        }
+        
+        // 处理房间创建
+        function handleRoomCreated(data) {
+            roomId = data.roomId;
+            playerId = data.playerId;
+            isHost = data.isHost;
+            
+            // 更新UI
+            roomIdDisplay.textContent = roomId;
+            roomInfo.style.display = 'block';
+            qrCode.style.display = 'block';
+            qrCodeImg.src = data.qrCode;
+            
+            if (isHost) {
+                hostControls.style.display = 'block';
+            }
+            
+            // 添加玩家到列表
+            updatePlayerList();
+            
+            // 显示准备按钮
+            readyBtn.style.display = 'block';
+            
+            // 隐藏创建房间和加入房间按钮
+            document.querySelector('.room-actions').style.display = 'none';
+            
+            showMessage('房间创建成功，请等待其他玩家加入', 'green');
+        }
+        
+        // 处理作为玩家加入
+        function handleJoinedAsPlayer(data) {
+            roomId = data.roomId;
+            playerId = data.playerId;
+            isHost = data.isHost;
+            
+            // 更新UI
+            roomIdDisplay.textContent = roomId;
+            roomInfo.style.display = 'block';
+            
+            if (isHost) {
+                hostControls.style.display = 'block';
+            }
+            
+            // 添加玩家到列表
+            updatePlayerList();
+            
+            // 显示准备按钮
+            readyBtn.style.display = 'block';
+            
+            // 隐藏创建房间和加入房间按钮
+            document.querySelector('.room-actions').style.display = 'none';
+            
+            showMessage('成功加入房间', 'green');
+        }
+        
+        // 处理作为观众加入
+        function handleJoinedAsSpectator(data) {
+            roomId = data.roomId;
+            playerId = data.playerId;
+            
+            // 更新UI
+            roomIdDisplay.textContent = roomId;
+            roomInfo.style.display = 'block';
+            
+            // 添加玩家到列表
+            updatePlayerList();
+            
+            // 隐藏创建房间和加入房间按钮
+            document.querySelector('.room-actions').style.display = 'none';
+            
+            showMessage('房间已满，作为观众加入', 'orange');
+        }
+        
+        // 处理玩家加入
+        function handlePlayerJoined(data) {
+            updatePlayerList();
+            showMessage('有新玩家加入房间', 'green');
+        }
+        
+        // 处理玩家离开
+        function handlePlayerLeft(data) {
+            updatePlayerList();
+            showMessage('有玩家离开房间', 'orange');
+        }
+        
+        // 处理难度设置
+        function handleDifficultySet(data) {
+            difficulty = data.difficulty;
+            updateDifficultyDisplay();
+            showMessage(`难度已设置为${getDifficultyName(difficulty)}`, 'green');
+        }
+        
+        // 处理玩家准备
+        function handlePlayerReady(data) {
+            updatePlayerList();
+            showMessage('有玩家准备就绪', 'green');
+        }
+        
+        // 处理游戏开始
+        function handleGameStarted(data) {
+            difficulty = data.difficulty;
+            currentPlayer = data.firstPlayer;
+            updateDifficultyDisplay();
+            
+            // 重置游戏状态
+            resetGame();
+            
+            // 显示回合指示器
+            updateTurnIndicator();
+            
+            // 隐藏准备按钮和再来一局按钮，显示游戏按钮
+            readyBtn.style.display = 'none';
+            restartBtn.style.display = 'none';
+            guessInput.disabled = false;
+            guessBtn.disabled = false;
+            
+            // 隐藏创建房间和加入房间按钮
+            document.querySelector('.room-actions').style.display = 'none';
+            
+            gameActive = true;
+            showMessage('游戏开始！', 'green');
+        }
+        
+        // 处理轮到自己
+        function handleYourTurn() {
+            updateTurnIndicator();
+            showMessage('轮到你猜数字了！', 'blue');
+        }
+        
+        // 处理猜测结果
+        function handleGuessResult(data) {
+            // 添加到历史记录
+            addToHistory(data.playerId, data.number, data.result);
+            
+            if (data.result === 'correct') {
+                // 游戏结束
+                gameActive = false;
+                guessInput.disabled = true;
+                guessBtn.disabled = true;
+                
+                // 显示获胜者
+                winnerIndicator.textContent = `🎉 ${data.playerId === playerId ? '你' : '对手'}获胜了！答案是${data.secretNumber}`;
+                winnerIndicator.style.display = 'block';
+                
+                // 显示再来一局按钮
+                if (isHost) {
+                    restartBtn.style.display = 'block';
+                }
+                
+                // 播放胜利音效
+                if (data.playerId === playerId) {
+                    playWinSound();
+                }
+                
+                showMessage(`${data.playerId === playerId ? '你' : '对手'}猜对了！答案是${data.secretNumber}`, 'green');
+            } else {
+                // 显示猜测结果
+                let resultText = data.result === 'tooHigh' ? '太大了！' : '太小了！';
+                showMessage(`${data.playerId === playerId ? '你' : '对手'}猜了${data.number}，${resultText}`, 'orange');
+                
+                // 更新当前玩家
+                currentPlayer = data.nextPlayer;
+                updateTurnIndicator();
+            }
+        }
+        
+        // 处理游戏重新开始
+        function handleGameRestarted() {
+            // 重置游戏状态
+            resetGame();
+            
+            // 显示准备按钮并重置状态
+            readyBtn.style.display = 'block';
+            readyBtn.textContent = '准备';
+            readyBtn.disabled = false;
+            restartBtn.style.display = 'none';
+            winnerIndicator.style.display = 'none';
+            turnIndicator.style.display = 'none';
+            
+            showMessage('游戏已重新开始，请准备', 'green');
+        }
+        
+        // 处理成为房主
+        function handleBecameHost() {
+            isHost = true;
+            hostControls.style.display = 'block';
+            showMessage('你成为了房主', 'green');
+        }
+        
+        // 创建房间
+        function createRoom() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'createRoom' }));
+            } else {
+                showMessage('请先连接到服务器', 'red');
+            }
+        }
+        
+        // 加入房间
+        function joinRoom(roomId) {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'joinRoom', roomId: roomId }));
+            } else {
+                showMessage('请先连接到服务器', 'red');
+            }
+        }
+        
+        // 设置难度
+        function setDifficulty(difficulty) {
+            if (ws && ws.readyState === WebSocket.OPEN && isHost) {
+                ws.send(JSON.stringify({ type: 'setDifficulty', difficulty: difficulty }));
+            }
+        }
+        
+        // 准备
+        function ready() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'ready' }));
+                readyBtn.textContent = '已准备';
+                readyBtn.disabled = true;
+            }
+        }
+        
+        // 重新开始
+        function restart() {
+            if (ws && ws.readyState === WebSocket.OPEN && isHost) {
+                ws.send(JSON.stringify({ type: 'restart' }));
+            }
+        }
+        
+        // 检查猜测
+        function checkGuess() {
+            console.log('checkGuess called, gameActive:', gameActive, 'currentPlayer:', currentPlayer, 'playerId:', playerId);
+            
+            if (!gameActive) {
+                showMessage('游戏未开始！', 'red');
+                return;
+            }
+            
+            if (currentPlayer !== playerId) {
+                showMessage('还没轮到你！', 'orange');
+                return;
+            }
+            
+            // 播放点击提示音
+            playClickSound();
+            
+            const guess = parseInt(guessInput.value);
+            
+            if (isNaN(guess) || guess < 1 || guess > difficultyRanges[difficulty]) {
+                showMessage(`请输入1-${difficultyRanges[difficulty]}之间的有效数字！`, 'red');
+                return;
+            }
+            
+            // 发送猜测
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'guess', number: guess }));
+                
+                // 清空输入框
+                guessInput.value = '';
+            }
+        }
+        
+        // 显示消息
+        function showMessage(text, color) {
+            message.textContent = text;
+            message.style.color = color;
+            message.style.backgroundColor = `${color}20`;
+        }
+        
+        // 添加到历史记录
+        function addToHistory(player, number, result) {
+            const li = document.createElement('li');
+            let resultText = '';
+            switch (result) {
+                case 'correct':
+                    resultText = '✓ 猜对了！';
+                    break;
+                case 'tooHigh':
+                    resultText = '↑ 太大了';
+                    break;
+                case 'tooLow':
+                    resultText = '↓ 太小了';
+                    break;
+            }
+            li.textContent = `${player === playerId ? '你' : '对手'}: ${number} ${resultText}`;
+            historyList.appendChild(li);
+            // 滚动到底部
+            historyList.scrollTop = historyList.scrollHeight;
+        }
+        
+        // 更新难度显示
+        function updateDifficultyDisplay() {
+            const difficultyNames = {
+                easy: '简单',
+                normal: '普通',
+                hard: '困难'
+            };
+            difficultyDisplay.textContent = difficultyNames[difficulty];
+            rangeDisplay.textContent = `1-${difficultyRanges[difficulty]}`;
+            
+            // 设置背景主题
+            document.body.className = difficulty;
+        }
+        
+        // 获取难度名称
+        function getDifficultyName(difficulty) {
+            const difficultyNames = {
+                easy: '简单',
+                normal: '普通',
+                hard: '困难'
+            };
+            return difficultyNames[difficulty];
+        }
+        
+        // 更新玩家列表
+        function updatePlayerList() {
+            // 这里简化处理，实际应该从服务器获取完整的玩家列表
+            playerListContainer.innerHTML = '';
+            
+            // 添加自己
+            const selfItem = document.createElement('div');
+            selfItem.className = 'player-item';
+            selfItem.innerHTML = `
+                <span>${isHost ? '玩家1 (房主)' : '玩家1'}</span>
+                <span class="player-status status-waiting">等待中</span>
+            `;
+            playerListContainer.appendChild(selfItem);
+            
+            // 添加其他玩家占位符
+            const otherItem = document.createElement('div');
+            otherItem.className = 'player-item';
+            otherItem.innerHTML = `
+                <span>玩家2</span>
+                <span class="player-status status-waiting">等待中</span>
+            `;
+            playerListContainer.appendChild(otherItem);
+        }
+        
+        // 更新回合指示器
+        function updateTurnIndicator() {
+            turnIndicator.style.display = 'block';
+            if (currentPlayer === playerId) {
+                turnIndicator.textContent = '轮到你了！';
+            } else {
+                turnIndicator.textContent = '对手的回合';
+            }
+        }
+        
+        // 重置游戏
+        function resetGame() {
+            // 重置UI
+            guessInput.value = '';
+            message.textContent = '';
+            message.style.backgroundColor = 'transparent';
+            historyList.innerHTML = '';
+            scoreDiv.style.display = 'none';
+            winnerIndicator.style.display = 'none';
+            turnIndicator.style.display = 'none';
+        }
+        
+        // 事件监听器
+        createRoomBtn.addEventListener('click', createRoom);
+        joinRoomBtn.addEventListener('click', function() {
+            const roomId = roomIdInput.value.trim();
+            if (roomId) {
+                joinRoom(roomId);
+            } else {
+                showMessage('请输入房间号', 'red');
+            }
+        });
+        
+        easyBtn.addEventListener('click', function() {
+            setDifficulty('easy');
+        });
+        
+        normalBtn.addEventListener('click', function() {
+            setDifficulty('normal');
+        });
+        
+        hardBtn.addEventListener('click', function() {
+            setDifficulty('hard');
+        });
+        
+        readyBtn.addEventListener('click', ready);
+        restartBtn.addEventListener('click', restart);
+        
+        // 绑定猜一猜按钮点击事件
+        guessBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Guess button clicked');
+            checkGuess();
+        });
+        
+        // 绑定回车键事件
+        guessInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkGuess();
+            }
+        });
+        
+        // 页面加载时连接WebSocket
+        window.addEventListener('load', function() {
+            connectWebSocket();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+administrators: #管理页面账号表
+    accountNumber: 账号
+    password: 密码哈希
+    is_banned: 是否封禁
+    permission: 权限
+dictionary_type: #字典类型表
+    id: 类型ID 主键
+    name: 名字
+    dict_type: 类型标签
+    is_banned: 是否禁用
+    create_time: 创建时间
+    update_time: 更新时间
+dictionary_item: #字典项表
+    id: 项ID 主键
+    dict_type: 类型标签 外键
+    dict_label: 字典标签
+    dict_key: 字典键
+    dict_key2: 字典键2
+    sort: 排序
+    display_style: 显示样式
+    is_banned: 是否禁用
+    create_time: 创建时间
+    update_time: 更新时间
+api_methods: #接口项表
+    id: 方法ID 主键
+    name: 接口名称（唯一）
+    description: 接口描述
+    group_name: 接口分组
+    is_banned: 是否禁用
+api_permissions: #权限表
+    method_id: 方法ID 外键
+    permission_level: 权限等级
+logs: #日志表
+    id: 日志ID 主键
+    log_type: 日志接口
+    log_name: 日志名称
+    log_content: 日志内容
+    log_return: 日志返回值
+    user_name: 操作者账户
+    user_ip: 操作者IP
+    created_at: 日志时间
+

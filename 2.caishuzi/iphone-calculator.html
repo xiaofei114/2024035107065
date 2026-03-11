@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone风格计算器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .calculator {
+            background-color: #000;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 30px 20px;
+            width: 350px;
+            max-width: 100%;
+        }
+
+        .display {
+            color: #fff;
+            font-size: 4rem;
+            font-weight: 300;
+            text-align: right;
+            padding: 20px 10px;
+            margin-bottom: 20px;
+            min-height: 120px;
+            word-wrap: break-word;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.6rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            aspect-ratio: 1;
+        }
+
+        button:hover {
+            filter: brightness(1.2);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .operator {
+            background-color: #ff9500;
+            font-size: 2.2rem;
+        }
+
+        .operator:hover {
+            background-color: #ffaa33;
+        }
+
+        .number {
+            font-size: 2rem;
+        }
+
+        #equals {
+            background-color: #ff9500;
+            font-size: 2.2rem;
+        }
+
+        #equals:hover {
+            background-color: #ffaa33;
+        }
+
+        #clear {
+            background-color: #a5a5a5;
+            color: #000;
+            font-size: 1.5rem;
+        }
+
+        #clear:hover {
+            background-color: #c7c7c7;
+        }
+
+        .zero {
+            grid-column: span 2;
+            border-radius: 50px;
+            justify-content: flex-start;
+            padding-left: 35px;
+            aspect-ratio: auto;
+        }
+
+        @media (max-width: 400px) {
+            .calculator {
+                width: 95%;
+                padding: 20px 15px;
+            }
+            
+            .display {
+                font-size: 3rem;
+                min-height: 100px;
+            }
+            
+            button {
+                padding: 22px;
+                font-size: 1.5rem;
+            }
+            
+            .operator {
+                font-size: 1.8rem;
+            }
+            
+            #clear {
+                font-size: 1.2rem;
+            }
+            
+            .zero {
+                padding-left: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="result">0</div>
+        <div class="buttons">
+            <button id="clear">C</button>
+            <button class="operator">/</button>
+            <button class="operator">*</button>
+            <button class="operator">-</button>
+            <button class="number">7</button>
+            <button class="number">8</button>
+            <button class="number">9</button>
+            <button class="operator">+</button>
+            <button class="number">4</button>
+            <button class="number">5</button>
+            <button class="number">6</button>
+            <button id="equals">=</button>
+            <button class="number zero">0</button>
+            <button class="number">.</button>
+        </div>
+    </div>
+    <script>
+        class Calculator {
+            constructor() {
+                this.result = document.getElementById('result');
+                this.currentValue = '0';
+                this.previousValue = '';
+                this.operator = '';
+                this.resetScreen = false;
+                this.init();
+            }
+
+            init() {
+                // 数字按钮点击事件
+                document.querySelectorAll('.number').forEach(button => {
+                    button.addEventListener('click', () => this.appendNumber(button.textContent));
+                });
+
+                // 运算符按钮点击事件
+                document.querySelectorAll('.operator').forEach(button => {
+                    button.addEventListener('click', () => this.chooseOperator(button.textContent));
+                });
+
+                // 等号按钮点击事件
+                document.getElementById('equals').addEventListener('click', () => this.calculate());
+
+                // 清除按钮点击事件
+                document.getElementById('clear').addEventListener('click', () => this.clear());
+            }
+
+            appendNumber(number) {
+                if (this.currentValue === '0' || this.resetScreen) {
+                    this.currentValue = number;
+                    this.resetScreen = false;
+                } else {
+                    // 防止重复输入小数点
+                    if (number === '.' && this.currentValue.includes('.')) {
+                        return;
+                    }
+                    this.currentValue += number;
+                }
+                this.updateDisplay();
+            }
+
+            chooseOperator(op) {
+                if (this.operator !== '') {
+                    this.calculate();
+                }
+                this.previousValue = this.currentValue;
+                this.operator = op;
+                this.resetScreen = true;
+            }
+
+            calculate() {
+                let computation;
+                const prev = parseFloat(this.previousValue);
+                const current = parseFloat(this.currentValue);
+
+                if (isNaN(prev) || isNaN(current)) {
+                    return;
+                }
+
+                switch (this.operator) {
+                    case '+':
+                        computation = prev + current;
+                        break;
+                    case '-':
+                        computation = prev - current;
+                        break;
+                    case '*':
+                        computation = prev * current;
+                        break;
+                    case '/':
+                        computation = prev / current;
+                        break;
+                    default:
+                        return;
+                }
+
+                this.currentValue = computation.toString();
+                this.operator = '';
+                this.previousValue = '';
+                this.resetScreen = true;
+                this.updateDisplay();
+            }
+
+            clear() {
+                this.currentValue = '0';
+                this.previousValue = '';
+                this.operator = '';
+                this.resetScreen = false;
+                this.updateDisplay();
+            }
+
+            updateDisplay() {
+                this.result.textContent = this.currentValue;
+            }
+        }
+
+        // 初始化计算器
+        new Calculator();
+    </script>
+</body>
+</html>

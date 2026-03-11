@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喜庆抽奖小程序</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #c62828 0%, #8e0000 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            overflow: hidden;
+            position: relative;
+            margin: 0;
+        }
+        
+        /* 春节主题背景纹理 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.15) 2px, transparent 2px),
+                radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.15) 2px, transparent 2px),
+                radial-gradient(circle at 40% 80%, rgba(255, 215, 0, 0.15) 2px, transparent 2px),
+                radial-gradient(circle at 60% 20%, rgba(255, 215, 0, 0.15) 2px, transparent 2px);
+            background-size: 150px 150px;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* 灯笼装饰 */
+        .lantern {
+            position: fixed;
+            z-index: 1;
+            animation: lantern-swing 3s infinite ease-in-out;
+        }
+        
+        .lantern.left-top {
+            top: 20px;
+            left: 20px;
+            width: 80px;
+            height: 100px;
+        }
+        
+        .lantern.right-top {
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 100px;
+        }
+        
+        .lantern.left-bottom {
+            bottom: 20px;
+            left: 20px;
+            width: 60px;
+            height: 80px;
+        }
+        
+        .lantern.right-bottom {
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 80px;
+        }
+        
+        /* 灯笼主体 */
+        .lantern-body {
+            width: 100%;
+            height: 80%;
+            background: linear-gradient(to bottom, #ff3333, #cc0000);
+            border-radius: 40% 40% 40% 40%;
+            position: relative;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+        }
+        
+        .lantern-body::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: 10%;
+            width: 80%;
+            height: 20px;
+            background: linear-gradient(to bottom, #ffd700, #ff9900);
+            border-radius: 50%;
+        }
+        
+        .lantern-body::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 10%;
+            width: 80%;
+            height: 25px;
+            background: linear-gradient(to bottom, #ffd700, #ff9900);
+            border-radius: 50%;
+        }
+        
+        /* 灯笼穗子 */
+        .lantern-tassel {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 5px;
+            height: 40px;
+            background: linear-gradient(to bottom, #ffd700, #ff9900, #ff6600);
+        }
+        
+        .lantern-tassel::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: -10px;
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(to bottom, #ffd700, #ff9900);
+            border-radius: 50%;
+        }
+        
+        /* 灯笼摆动动画 */
+        @keyframes lantern-swing {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        
+        /* 中国结装饰 */
+        .chinese-knot {
+            position: fixed;
+            z-index: 1;
+            width: 100px;
+            height: 100px;
+        }
+        
+        .knot-top-left {
+            top: 30px;
+            left: 50%;
+            transform: translateX(-200px);
+        }
+        
+        .knot-top-right {
+            top: 30px;
+            right: 50%;
+            transform: translateX(200px);
+        }
+        
+        /* 中国结主体 */
+        .knot-body {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #cc0000;
+            clip-path: polygon(
+                50% 0%, 80% 10%, 95% 35%, 
+                95% 65%, 80% 90%, 50% 100 
+%,                20% 90%, 5% 65%, 5% 35%, 
+                20% 10%
+            );
+            box-shadow: 0 0 15px rgba(204, 0, 0, 0.8);
+        }
+        
+        .knot-body::before {
+            content: "";
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background: transparent;
+            border: 3px solid #ffd700;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ffd700;
+        }
+        
+        .knot-body::after {
+            content: "";
+            position: absolute;
+            top: 35px;
+            left: 35px;
+            width: 30px;
+            height: 30px;
+            background: #ffd700;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ffd700;
+        }
+        
+        /* 中国结穗子 */
+        .knot-tassels {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+        
+        .knot-tassel {
+            width: 15px;
+            height: 40px;
+            background: linear-gradient(to bottom, #ffd700, #ff9900, #cc0000);
+            border-radius: 5px;
+        }
+        
+        /* 金色边框装饰 */
+        .gold-border {
+            position: fixed;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .border-top {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(to right, #ffd700, #ff9900, #ffd700);
+            box-shadow: 0 0 20px #ffd700;
+        }
+        
+        .border-bottom {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(to right, #ffd700, #ff9900, #ffd700);
+            box-shadow: 0 0 20px #ffd700;
+        }
+        
+        .border-left {
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 100%;
+            background: linear-gradient(to bottom, #ffd700, #ff9900, #ffd700);
+            box-shadow: 0 0 20px #ffd700;
+        }
+        
+        .border-right {
+            top: 0;
+            right: 0;
+            width: 10px;
+            height: 100%;
+            background: linear-gradient(to bottom, #ffd700, #ff9900, #ffd700);
+            box-shadow: 0 0 20px #ffd700;
+        }
+        
+        /* 春节祝福语 */
+        .new-year-wishes {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.5rem;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            opacity: 0.1;
+            z-index: 0;
+            pointer-events: none;
+            white-space: nowrap;
+            font-weight: bold;
+        }
+        
+        .container {
+            width: 95vw;
+            max-width: 1200px;
+            height: 95vh;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border: 5px solid #ffd700;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+            flex-shrink: 0;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #ffeb99;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+        
+        /* 更新标题为春节主题 */
+        h1::before {
+            content: "🎉 ";
+        }
+        
+        h1::after {
+            content: " 🎊";
+        }
+        .participants-section {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            flex: 1;
+            overflow: hidden;
+            min-height: 200px;
+        }
+        
+        .participants-section h2 {
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .participants-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+            padding: 3px;
+            max-height: 180px;
+        }
+        
+        .participant {
+            background: linear-gradient(145deg, #ffd700, #ffa500);
+            color: #8b0000;
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+            margin: 3px;
+            white-space: nowrap;
+            box-sizing: border-box;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .participant:hover {
+            transform: translateY(-5px);
+        }
+        
+        .lottery-area {
+            margin: 15px 0;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            border: 3px dashed #ffd700;
+            flex-shrink: 0;
+        }
+        
+        .current-name {
+            font-size: 3.5rem;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.9);
+            margin-bottom: 20px;
+            background-color: rgba(139, 0, 0, 0.3);
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+        
+        .rolling {
+            animation: roll 0.1s infinite;
+        }
+        
+        @keyframes roll {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .winner {
+            animation: winnerGlow 1.5s infinite alternate;
+            color: #ffeb3b;
+            font-size: 3.8rem;
+        }
+        
+        @keyframes winnerGlow {
+            0% { 
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.9);
+                transform: scale(1);
+            }
+            100% { 
+                text-shadow: 0 0 40px #ffd700, 0 0 60px #ffeb3b;
+                transform: scale(1.05);
+            }
+        }
+        
+        .lottery-btn {
+            background: linear-gradient(to bottom, #ffd700, #ffa500);
+            color: #8b0000;
+            border: none;
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 20px 40px;
+            border-radius: 70px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            min-width: 300px;
+        }
+        
+        .lottery-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(to bottom, #ffeb3b, #ffc107);
+        }
+        
+        .lottery-btn:active {
+            transform: translateY(0);
+        }
+        
+        .lottery-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .lottery-btn i {
+            margin-right: 15px;
+            font-size: 2.8rem;
+        }
+        
+        .results {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            flex-shrink: 0;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        
+        .results h2 {
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .winners-list {
+            list-style-type: none;
+            font-size: 1.2rem;
+            color: #ffeb99;
+        }
+        
+        .winners-list li {
+            padding: 8px;
+            border-bottom: 1px dashed rgba(255, 215, 0, 0.5);
+        }
+        
+        .winners-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            opacity: 0;
+            animation: confetti-fall linear forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff0;
+            animation: firework-explode 1s forwards;
+        }
+        
+        @keyframes firework-explode {
+            0% {
+                transform: translate(var(--x), var(--y)) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x-end), var(--y-end)) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        .instructions {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #ffcccb;
+            line-height: 1.4;
+            flex-shrink: 0;
+        }
+        
+        footer {
+            margin-top: 15px;
+            color: #ffcccb;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .current-name {
+                font-size: 3.5rem;
+                height: 120px;
+            }
+            
+            .winner {
+                font-size: 4rem;
+            }
+            
+            .lottery-btn {
+                font-size: 2rem;
+                padding: 20px 40px;
+                min-width: 300px;
+            }
+            
+            .participant {
+                padding: 10px 15px;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .current-name {
+                font-size: 2.8rem;
+                height: 100px;
+            }
+            
+            .lottery-btn {
+                font-size: 1.7rem;
+                padding: 18px 30px;
+                min-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 春节装饰元素 -->
+    <div class="new-year-wishes">新春大吉 恭喜发财</div>
+    
+    <!-- 金色边框 -->
+    <div class="gold-border border-top"></div>
+    <div class="gold-border border-bottom"></div>
+    <div class="gold-border border-left"></div>
+    <div class="gold-border border-right"></div>
+    
+    <!-- 灯笼 -->
+    <div class="lantern left-top">
+        <div class="lantern-body"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern right-top">
+        <div class="lantern-body"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern left-bottom">
+        <div class="lantern-body"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <div class="lantern right-bottom">
+        <div class="lantern-body"></div>
+        <div class="lantern-tassel"></div>
+    </div>
+    
+    <!-- 中国结 -->
+    <div class="chinese-knot knot-top-left">
+        <div class="knot-body"></div>
+        <div class="knot-tassels">
+            <div class="knot-tassel"></div>
+            <div class="knot-tassel"></div>
+            <div class="knot-tassel"></div>
+        </div>
+    </div>
+    
+    <div class="chinese-knot knot-top-right">
+        <div class="knot-body"></div>
+        <div class="knot-tassels">
+            <div class="knot-tassel"></div>
+            <div class="knot-tassel"></div>
+            <div class="knot-tassel"></div>
+        </div>
+    </div>
+    
+    <div class="confetti-container" id="confetti-container"></div>
+    
+    <div class="container">
+        <h1><i class="fas fa-gift"></i> 喜庆抽奖小程序</h1>
+        <p class="subtitle">点击下方按钮开始抽奖，试试你的运气！</p>
+        
+        <div class="participants-section">
+            <h2><i class="fas fa-users"></i> 参与者名单</h2>
+            <div class="participants-list" id="participants-list">
+                <!-- 参与者将通过JavaScript动态添加 -->
+            </div>
+        </div>
+        
+        <div class="lottery-area">
+            <div class="current-name" id="current-name">等待抽奖...</div>
+            <button class="lottery-btn" id="lottery-btn">
+                <i class="fas fa-play-circle"></i> 开始抽奖
+            </button>
+        </div>
+        
+
+    </div>
+
+    <script>
+        // 预设参与者名字（真实姓名，去掉学号）
+        const participants = [
+            "刘晓龙", "白力丹", "陈欣欣", "范智颖", "冯禹翔", 
+            "郭瑞龙", "韩烨阳", "花镝程", "焦娜娃", "李博文", 
+            "李世奇", "刘天雪", "刘誉东", "刘泽瑞", "柳长靓", 
+            "李雅萌", "卢思翰", "齐彤", "商天宇", "宋伟泰", 
+            "眭家硕", "王茗崧", "闫明明", "尹宇豪", "袁亚松", 
+            "张盟", "张文帅", "张心硕", "张增宇", "兆佳慧", 
+            "赵瑞", "赵旭东", "赵一诺", "朱跃政"
+        ];
+        
+        // 中奖者记录
+        let winners = [];
+        
+        // 剩余参与者（未中奖者）
+        let remainingParticipants = [...participants];
+        
+        // DOM元素
+        const participantsList = document.getElementById('participants-list');
+        const currentNameElement = document.getElementById('current-name');
+        const lotteryBtn = document.getElementById('lottery-btn');
+        const confettiContainer = document.getElementById('confetti-container');
+        
+        // 初始化参与者列表
+        function initParticipants() {
+            participantsList.innerHTML = '';
+            participants.forEach(participant => {
+                const participantElement = document.createElement('div');
+                participantElement.className = 'participant';
+                participantElement.textContent = participant;
+                
+                // 标记已中奖者
+                if (winners.includes(participant)) {
+                    participantElement.style.border = '2px solid #ffd700';
+                    participantElement.style.boxShadow = '0 0 15px rgba(255, 215, 0, 0.8)';
+                    participantElement.style.background = 'linear-gradient(145deg, #c62828, #8e0000)';
+                    participantElement.style.color = '#ffd700';
+                    participantElement.style.transform = 'scale(1)';
+                    participantElement.style.zIndex = '100';
+                    participantElement.style.fontWeight = 'bold';
+                    participantElement.style.fontSize = '0.8rem';
+                    participantElement.style.padding = '6px 12px';
+                    participantElement.style.margin = '3px';
+                    participantElement.style.boxSizing = 'border-box';
+                    participantElement.style.minWidth = '60px';
+                    participantElement.style.width = 'auto';
+                    participantElement.style.display = 'inline-block';
+                    participantElement.style.textAlign = 'center';
+                    // 移除文本内容，然后添加带图标的内容
+                    participantElement.textContent = '';
+                    participantElement.innerHTML = '<i class="fas fa-crown" style="color: #ffd700; margin-right: 2px; font-size: 0.7rem;"></i><span style="display: inline-block; min-width: 40px;">' + participant + '</span>';
+                    participantElement.style.animation = 'winnerGlow 1.5s infinite alternate';
+                }
+                
+                participantsList.appendChild(participantElement);
+            });
+        }
+        
+
+        
+        // 创建彩色纸屑
+        function createConfetti() {
+            // 清空之前的纸屑
+            confettiContainer.innerHTML = '';
+            
+            // 创建100个纸屑
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                // 随机颜色
+                const colors = ['#ffd700', '#ff0000', '#00ff00', '#0000ff', '#ff00ff', '#ffff00', '#00ffff'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.backgroundColor = color;
+                
+                // 随机位置
+                confetti.style.left = Math.random() * 100 + 'vw';
+                
+                // 随机动画延迟和持续时间
+                const delay = Math.random() * 2;
+                const duration = 2 + Math.random() * 3;
+                confetti.style.animationDelay = delay + 's';
+                confetti.style.animationDuration = duration + 's';
+                
+                confettiContainer.appendChild(confetti);
+            }
+            
+            // 创建烟花效果
+            createFireworks();
+        }
+        
+        // 创建烟花效果
+        function createFireworks() {
+            // 创建10个烟花
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    
+                    // 随机颜色
+                    const colors = ['#ffd700', '#ff0000', '#00ff00', '#0000ff', '#ff00ff'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    firework.style.backgroundColor = color;
+                    
+                    // 随机起始位置（屏幕中心附近）
+                    const startX = 50 + (Math.random() * 20 - 10);
+                    const startY = 50 + (Math.random() * 20 - 10);
+                    
+                    // 随机结束位置
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 30 + Math.random() * 50;
+                    const endX = startX + Math.cos(angle) * distance;
+                    const endY = startY + Math.sin(angle) * distance;
+                    
+                    firework.style.setProperty('--x', startX + 'vw');
+                    firework.style.setProperty('--y', startY + 'vh');
+                    firework.style.setProperty('--x-end', endX + 'vw');
+                    firework.style.setProperty('--y-end', endY + 'vh');
+                    
+                    firework.style.left = startX + 'vw';
+                    firework.style.top = startY + 'vh';
+                    
+                    confettiContainer.appendChild(firework);
+                    
+                    // 动画结束后移除烟花元素
+                    setTimeout(() => {
+                        if (firework.parentNode) {
+                            firework.parentNode.removeChild(firework);
+                        }
+                    }, 1000);
+                }, i * 200);
+            }
+        }
+        
+        // 检查是否所有人都已中奖
+        function checkAllWinners() {
+            if (remainingParticipants.length === 0) {
+                // 所有人已中奖，显示提示并重置
+                setTimeout(() => {
+                    if (confirm('恭喜！所有参与者都已中奖！点击"确定"重置抽奖，让所有人重新参与。')) {
+                        resetLottery();
+                    }
+                }, 1000);
+                return true;
+            }
+            return false;
+        }
+        
+        // 重置抽奖
+        function resetLottery() {
+            winners = [];
+            remainingParticipants = [...participants];
+            initParticipants();
+            currentNameElement.textContent = "抽奖已重置！";
+            currentNameElement.classList.remove('winner');
+            currentNameElement.classList.remove('rolling');
+        }
+        
+        // 抽奖函数
+        function startLottery() {
+            // 检查是否所有人都已中奖
+            if (checkAllWinners()) {
+                return;
+            }
+            
+            // 禁用按钮，防止重复点击
+            lotteryBtn.disabled = true;
+            lotteryBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 抽奖中...';
+            
+            // 添加滚动动画
+            currentNameElement.classList.add('rolling');
+            currentNameElement.classList.remove('winner');
+            
+            // 快速滚动名字
+            let rollCount = 0;
+            const maxRollCount = 40; // 大约2秒（每50毫秒切换一次）
+            const rollInterval = setInterval(() => {
+                // 从剩余参与者中随机选择一个名字
+                const randomIndex = Math.floor(Math.random() * remainingParticipants.length);
+                currentNameElement.textContent = remainingParticipants[randomIndex];
+                
+                rollCount++;
+                
+                // 停止滚动
+                if (rollCount >= maxRollCount) {
+                    clearInterval(rollInterval);
+                    
+                    // 最终选择一个中奖者（从剩余参与者中）
+                    const winnerIndex = Math.floor(Math.random() * remainingParticipants.length);
+                    const winner = remainingParticipants[winnerIndex];
+                    
+                    // 显示中奖者
+                    currentNameElement.textContent = winner;
+                    currentNameElement.classList.remove('rolling');
+                    currentNameElement.classList.add('winner');
+                    
+                    // 添加到中奖者列表
+                    winners.unshift(winner);
+                    
+                    // 从剩余参与者中移除中奖者
+                    remainingParticipants = remainingParticipants.filter(p => p !== winner);
+                    
+                    // 更新参与者列表显示
+                    initParticipants();
+                    
+                    // 创建庆祝效果
+                    createConfetti();
+                    
+                    // 恢复按钮状态
+                    setTimeout(() => {
+                        lotteryBtn.disabled = false;
+                        lotteryBtn.innerHTML = '<i class="fas fa-play-circle"></i> 开始抽奖';
+                    }, 2000);
+                }
+            }, 50);
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initParticipants();
+            
+            // 绑定抽奖按钮事件
+            lotteryBtn.addEventListener('click', startLottery);
+            
+            // 添加键盘支持（按空格键也可以抽奖）
+            document.addEventListener('keydown', (event) => {
+                if (event.code === 'Space' && !lotteryBtn.disabled) {
+                    event.preventDefault();
+                    startLottery();
+                }
+            });
+            
+            // 添加重置按钮（可选功能）
+            const resetBtn = document.createElement('button');
+            resetBtn.innerHTML = '<i class="fas fa-redo"></i> 重置抽奖';
+            resetBtn.style.cssText = `
+                background: linear-gradient(to bottom, #ff3333, #cc0000);
+                color: white;
+                border: none;
+                font-size: 1.2rem;
+                padding: 10px 20px;
+                border-radius: 50px;
+                cursor: pointer;
+                margin-top: 20px;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            `;
+            resetBtn.addEventListener('click', resetLottery);
+            document.querySelector('.container').appendChild(resetBtn);
+        });
+    </script>
+</body>
+</html>
