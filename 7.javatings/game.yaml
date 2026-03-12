@@ -1,0 +1,537 @@
+# 游戏配置文件
+startId: start
+
+# 物品定义
+items:
+  map:
+    name: "地图"
+    description: "一张洞穴地图，显示了各个区域的位置"
+  key:
+    name: "钥匙"
+    description: "一把神秘的钥匙，不知道可以打开什么"
+  healing_potion:
+    name: "治疗药水"
+    description: "可以恢复生命值的药水"
+  magic_scroll:
+    name: "魔法卷轴"
+    description: "记载着古老魔法的卷轴"
+  torch:
+    name: "火把"
+    description: "可以照亮黑暗的火把"
+  strength_potion:
+    name: "力量药水"
+    description: "可以增加力量的药水，在战斗中更有效"
+  speed_potion:
+    name: "速度药水"
+    description: "可以增加速度的药水，逃跑时更有效"
+  luck_potion:
+    name: "幸运药水"
+    description: "可以增加幸运的药水，获得更好的奖励"
+  shield:
+    name: "盾牌"
+    description: "可以提供防护的盾牌，减少受到的伤害"
+  sword:
+    name: "剑"
+    description: "一把锋利的剑，增加战斗的成功率"
+  food:
+    name: "食物"
+    description: "可以恢复少量生命值的食物"
+  amulet:
+    name: "护身符"
+    description: "一个神秘的护身符，提供特殊能力"
+  potion_of_invisibility:
+    name: "隐形药水"
+    description: "可以短暂隐形的药水，避开敌人的注意"
+
+# 怪物定义
+monsters:
+  dragon:
+    name: "巨龙"
+    description: "一只巨大的龙，拥有强大的火焰 breath"
+    health: 100
+    attack: 30
+  goblin:
+    name: "地精"
+    description: "一个狡猾的地精，善于使用武器"
+    health: 50
+    attack: 15
+  spider:
+    name: "巨型蜘蛛"
+    description: "一只巨大的蜘蛛，有毒牙"
+    health: 40
+    attack: 10
+  skeleton:
+    name: "骷髅兵"
+    description: "一个复活的骷髅兵，手持武器"
+    health: 60
+    attack: 20
+  slime:
+    name: "史莱姆"
+    description: "一个粘性的史莱姆，会腐蚀装备"
+    health: 30
+    attack: 5
+
+# 场景定义
+scenes:
+  start:
+    description: "你是一名勇敢的探险者，来到了一个神秘的洞穴入口。洞穴内传来奇怪的声音，你需要决定接下来的行动。"
+    choices:
+      - id: left
+        text: "进入左边的通道"
+        nextScene: left_room
+      - id: right
+        text: "进入右边的通道"
+        nextScene: right_room
+      - id: middle
+        text: "进入中间的通道"
+        nextScene: middle_room
+      - id: look_around
+        text: "查看周围"
+        nextScene: look_around
+
+  look_around:
+    description: "你仔细查看了洞穴入口周围，发现了一个隐藏的小洞穴。洞穴里有一个奇怪的按钮。"
+    choices:
+      - id: press_button
+        text: "按下按钮"
+        nextScene: easter_egg
+      - id: return
+        text: "返回入口"
+        nextScene: start
+
+  easter_egg:
+    description: "你按下了按钮，突然地面开始震动，一个秘密通道出现在你面前。你进入通道，发现了一个装满宝藏的房间！"
+    healthChange: 100
+    reward: "彩蛋宝藏"
+    choices:
+      - id: take_treasure
+        text: "拿走宝藏"
+        nextScene: take_easter_treasure
+      - id: return
+        text: "返回入口"
+        nextScene: start
+
+  take_easter_treasure:
+    description: "你拿走了彩蛋宝藏，获得了大量的金币和宝石。突然，你听到了一个声音：'恭喜你发现了隐藏彩蛋！你是一个细心的探险者！'"
+    healthChange: 50
+    reward: "隐藏彩蛋奖励"
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_win
+      - id: return
+        text: "返回入口"
+        nextScene: start
+
+  left_room:
+    description: "你进入了左边的通道，通道越来越窄，光线越来越暗。突然，你遇到了一只巨大的龙！它正趴在一堆金币上睡觉。龙被你的脚步声惊醒，睁开了眼睛，露出锋利的牙齿。"
+    choices:
+      - id: fight
+        text: "战斗"
+        nextScene: fight_dragon
+      - id: run
+        text: "逃跑"
+        nextScene: run_away
+      - id: negotiate
+        text: "尝试谈判"
+        nextScene: negotiate_dragon
+
+  right_room:
+    description: "你进入了右边的通道，通道宽敞明亮，墙壁上镶嵌着发光的宝石。在通道的尽头，你发现了一个闪闪发光的宝箱。宝箱上有一个复杂的锁，似乎需要决定是否打开它。"
+    choices:
+      - id: open
+        text: "打开宝箱"
+        nextScene: open_chest
+      - id: leave
+        text: "不打开宝箱"
+        nextScene: leave_chest
+      - id: search
+        text: "搜索周围"
+        nextScene: search_right
+
+  middle_room:
+    description: "你进入了中间的通道，通道两侧有许多洞穴。你看到一个洞穴里发出微弱的光芒，另一个洞穴里传来流水声。突然，你听到了骨头摩擦的声音，一个骷髅兵从阴影中走出来，向你发起了攻击！"
+    monster: skeleton
+    choices:
+      - id: light
+        text: "进入有光芒的洞穴"
+        nextScene: light_cave
+      - id: water
+        text: "进入有流水声的洞穴"
+        nextScene: water_cave
+      - id: continue
+        text: "继续前进"
+        nextScene: deep_cave
+
+  fight_dragon:
+    description: "你拔出武器，勇敢地向龙冲去！龙向你喷出火焰，你受到了伤害！"
+    healthChange: -30
+    choices:
+      - id: continue_fight
+        text: "继续战斗"
+        nextScene: win_fight
+      - id: escape
+        text: "尝试逃跑"
+        nextScene: run_away
+
+  win_fight:
+    description: "你奋力反击，击中了龙的要害！经过激烈的战斗，你成功击败了龙！"
+    healthChange: 50
+    reward: "龙的宝藏"
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_win
+      - id: explore
+        text: "探索龙的巢穴"
+        nextScene: dragon_den
+
+  run_away:
+    description: "你转身就跑，龙在后面紧追不舍。你在逃跑过程中被龙的尾巴扫中，受到了伤害！"
+    healthChange: -10
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_lose
+      - id: hide
+        text: "寻找藏身之处"
+        nextScene: hide_place
+
+  negotiate_dragon:
+    description: "你尝试与龙谈判，告诉它你只是来探险的，没有恶意。龙似乎理解了你的意思，它让开了路，示意你可以拿走一些宝藏。"
+    healthChange: 10
+    reward: "龙的馈赠"
+    choices:
+      - id: take
+        text: "拿走宝藏"
+        nextScene: take_treasure
+      - id: leave
+        text: "不拿宝藏离开"
+        nextScene: leave_dragon
+
+  open_chest:
+    description: "你小心地打开了宝箱，里面装满了金币和珠宝！在宝箱的最底层，你发现了一把闪亮的钥匙和几颗珍贵的宝石。宝箱旁边有一扇神秘的门，看起来需要钥匙才能打开。"
+    choices:
+      - id: use_key
+        text: "用宝箱里的钥匙开门"
+        nextScene: open_door
+      - id: take_gems
+        text: "拿走宝石离开"
+        nextScene: take_gems_leave
+      - id: check
+        text: "检查宝箱内部"
+        nextScene: check_chest
+
+  leave_chest:
+    description: "你决定不打开宝箱，转身离开了通道。虽然你没有获得宝藏，但你保住了好奇心，这也许是件好事。"
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_lose
+      - id: return
+        text: "返回入口"
+        nextScene: start
+
+  search_right:
+    description: "你搜索了周围，发现了一个隐藏的小洞穴。在洞穴里，你找到了一个医疗包和一些食物。突然，一个地精从角落里跳出来，挥舞着武器向你攻击！"
+    monster: goblin
+    healthChange: 20
+    reward: "医疗包和食物"
+    items:
+      - healing_potion
+      - torch
+      - food
+      - shield
+    choices:
+      - id: open_chest
+        text: "返回打开宝箱"
+        nextScene: open_chest
+      - id: leave
+        text: "离开通道"
+        nextScene: leave_chest
+
+  light_cave:
+    description: "你进入了有光芒的洞穴，发现里面有一个古老的祭坛。祭坛上放着一个发光的宝石，旁边有一个医疗包。"
+    healthChange: 30
+    reward: "发光的宝石"
+    items:
+      - magic_scroll
+      - map
+      - amulet
+      - strength_potion
+    choices:
+      - id: take_gem
+        text: "拿走宝石"
+        nextScene: take_gem
+      - id: leave
+        text: "离开洞穴"
+        nextScene: middle_room
+
+  water_cave:
+    description: "你进入了有流水声的洞穴，发现里面有一条清澈的小溪。溪水看起来很干净，你可以喝水休息。在溪边，你注意到一块奇怪的石头。"
+    healthChange: 40
+    choices:
+      - id: drink
+        text: "喝水休息"
+        nextScene: drink_water
+      - id: leave
+        text: "离开洞穴"
+        nextScene: middle_room
+      - id: check_stone
+        text: "检查奇怪的石头"
+        nextScene: water_egg
+
+  water_egg:
+    description: "你检查了奇怪的石头，发现它是一个机关！你触动了机关，一个隐藏的洞穴出现在你面前。洞穴里有一个宝箱，里面装满了魔法物品。"
+    healthChange: 60
+    reward: "水洞彩蛋宝藏"
+    items:
+      - speed_potion
+      - luck_potion
+      - potion_of_invisibility
+      - sword
+    choices:
+      - id: take_treasure
+        text: "拿走宝藏"
+        nextScene: take_water_treasure
+      - id: return
+        text: "返回水洞"
+        nextScene: water_cave
+
+  take_water_treasure:
+    description: "你拿走了水洞彩蛋宝藏，获得了魔法物品。突然，你听到了一个声音：'恭喜你发现了水洞彩蛋！你是一个善于观察的探险者！'"
+    healthChange: 40
+    reward: "水洞彩蛋奖励"
+    choices:
+      - id: return
+        text: "返回水洞"
+        nextScene: water_cave
+      - id: end
+        text: "结束游戏"
+        nextScene: end_win
+
+  deep_cave:
+    description: "你继续前进，来到了洞穴的深处。这里有一个巨大的地下湖，湖中央有一个小岛，岛上有一座古老的神庙。"
+    choices:
+      - id: boat
+        text: "寻找船只"
+        nextScene: find_boat
+      - id: swim
+        text: "游泳过去"
+        nextScene: swim_lake
+      - id: return
+        text: "返回"
+        nextScene: middle_room
+
+  dragon_den:
+    description: "你探索了龙的巢穴，发现了更多的宝藏和一个医疗室。你可以在这里休息恢复生命值。"
+    healthChange: 60
+    reward: "额外的宝藏"
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_win
+      - id: leave
+        text: "离开巢穴"
+        nextScene: start
+
+  hide_place:
+    description: "你找到了一个小洞穴藏身，龙没有发现你。你在洞穴里休息了一会儿，恢复了一些生命值。"
+    healthChange: 25
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_lose
+      - id: return
+        text: "返回入口"
+        nextScene: start
+
+  take_treasure:
+    description: "你拿走了龙的馈赠，获得了一些金币和珠宝。龙对你点点头，示意你可以离开了。"
+    healthChange: 15
+    reward: "龙的宝藏"
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_win
+      - id: return
+        text: "返回入口"
+        nextScene: start
+
+  leave_dragon:
+    description: "你没有拿龙的宝藏，选择了离开。龙对你的诚实感到满意，给了你一个祝福。"
+    healthChange: 20
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_win
+      - id: return
+        text: "返回入口"
+        nextScene: start
+
+  check_chest:
+    description: "你仔细检查了宝箱内部，发现了一个隐藏的夹层，里面有一个医疗包和一张地图。"
+    healthChange: 25
+    reward: "医疗包和地图"
+    choices:
+      - id: use_key
+        text: "用钥匙开门"
+        nextScene: open_door
+      - id: take_gems
+        text: "拿走宝石离开"
+        nextScene: take_gems_leave
+
+  open_door:
+    description: "你用钥匙打开了神秘的门，门后是一个更大的宝藏室！里面有无数的金币、宝石和魔法物品，你成为了世界上最富有的人。"
+    healthChange: 30
+    reward: "巨大的宝藏"
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_win
+      - id: explore
+        text: "探索宝藏室"
+        nextScene: treasure_room
+
+  take_gems_leave:
+    description: "你拿走了几颗宝石，决定离开洞穴。但当你走到洞口时，触发了洞穴的陷阱，洞口崩塌了！"
+    healthChange: -50
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_lose
+      - id: dig
+        text: "尝试挖掘逃生"
+        nextScene: dig_escape
+
+  take_gem:
+    description: "你拿走了发光的宝石，宝石的光芒照亮了整个洞穴。你感到充满了力量。"
+    healthChange: 35
+    reward: "发光的宝石"
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_win
+      - id: return
+        text: "返回中间通道"
+        nextScene: middle_room
+
+  drink_water:
+    description: "你喝了清澈的溪水，感觉精神焕发。溪水有神奇的效果，让你恢复了大量生命值。"
+    healthChange: 50
+    choices:
+      - id: return
+        text: "返回中间通道"
+        nextScene: middle_room
+      - id: explore
+        text: "探索水洞深处"
+        nextScene: water_deep
+
+  find_boat:
+    description: "你找到了一只小船，划着船来到了湖中央的小岛。岛上的神庙里有一个巨大的宝箱。"
+    choices:
+      - id: open_temple
+        text: "打开神庙宝箱"
+        nextScene: temple_chest
+      - id: return
+        text: "返回"
+        nextScene: deep_cave
+
+  swim_lake:
+    description: "你决定游泳过去，湖水很冷，但你还是坚持游到了小岛。你感到有些疲惫，但成功到达了神庙。"
+    healthChange: -15
+    choices:
+      - id: open_temple
+        text: "打开神庙宝箱"
+        nextScene: temple_chest
+      - id: return
+        text: "返回"
+        nextScene: deep_cave
+
+  treasure_room:
+    description: "你探索了宝藏室，发现了更多的宝藏和一个魔法喷泉。喷泉的水可以治愈一切伤口。"
+    healthChange: 70
+    reward: "魔法喷泉的祝福"
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_win
+      - id: leave
+        text: "离开宝藏室"
+        nextScene: start
+
+  dig_escape:
+    description: "你尝试挖掘逃生，经过努力，你终于挖出了一条通道，成功逃出了洞穴。"
+    healthChange: -20
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_win
+      - id: return
+        text: "返回入口"
+        nextScene: start
+
+  water_deep:
+    description: "你探索了水洞深处，发现了一个水下洞穴，里面有一个巨大的珍珠和一些医疗用品。"
+    healthChange: 40
+    reward: "巨大的珍珠"
+    choices:
+      - id: return
+        text: "返回水洞入口"
+        nextScene: water_cave
+      - id: end
+        text: "结束游戏"
+        nextScene: end_win
+
+  temple_chest:
+    description: "你打开了神庙的宝箱，里面装满了黄金和宝石，还有一个魔法护符。护符给了你强大的力量。在宝箱旁边，你注意到墙上有一个奇怪的符号。"
+    healthChange: 50
+    reward: "魔法护符"
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_win
+      - id: return
+        text: "返回地下湖"
+        nextScene: deep_cave
+      - id: check_symbol
+        text: "检查墙上的符号"
+        nextScene: temple_egg
+
+  temple_egg:
+    description: "你检查了墙上的符号，发现它是一个古老的机关！你触动了机关，神庙的墙壁打开了，露出了一个隐藏的密室。密室里有一个巨大的水晶，散发着强大的魔法能量。"
+    healthChange: 80
+    reward: "神庙彩蛋宝藏"
+    choices:
+      - id: take_crystal
+        text: "拿走水晶"
+        nextScene: take_crystal
+      - id: return
+        text: "返回神庙"
+        nextScene: temple_chest
+
+  take_crystal:
+    description: "你拿走了魔法水晶，获得了强大的魔法力量。突然，你听到了一个声音：'恭喜你发现了神庙彩蛋！你是一个智慧的探险者！'"
+    healthChange: 60
+    reward: "神庙彩蛋奖励"
+    choices:
+      - id: end
+        text: "结束游戏"
+        nextScene: end_win
+      - id: return
+        text: "返回神庙"
+        nextScene: temple_chest
+
+  end_win:
+    description: "恭喜你！你成功完成了冒险，获得了丰厚的奖励！"
+    choices:
+      - id: restart
+        text: "重新开始游戏"
+        nextScene: start
+
+  end_lose:
+    description: "虽然这次冒险没有成功，但你积累了宝贵的经验。下次一定会更好！"
+    choices:
+      - id: restart
+        text: "重新开始游戏"
+        nextScene: start
