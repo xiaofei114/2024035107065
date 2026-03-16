@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Maven项目的根配置文件，定义项目的基本信息和依赖 -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <!-- POM模型的版本号 -->
+    <modelVersion>4.0.0</modelVersion>
+    
+    <!-- 项目的组织ID，通常使用反向域名 -->
+    <groupId>com.example</groupId>
+    <!-- 项目的唯一标识符 -->
+    <artifactId>student-manager</artifactId>
+    <!-- 项目的版本号 -->
+    <version>1.0-SNAPSHOT</version>
+    <!-- 项目的打包方式，jar表示打包成Java可执行jar包 -->
+    <packaging>jar</packaging>
+    
+    <!-- 项目的名称 -->
+    <name>Student Manager</name>
+    <!-- 项目的描述 -->
+    <description>学生信息管理系统 - 查询学生信息</description>
+    
+    <!-- 属性配置区域，定义一些可重用的变量 -->
+    <properties>
+        <!-- 设置项目的源代码编码为UTF-8，支持中文 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- 设置编译器的源代码版本为Java 8 -->
+        <maven.compiler.source>8</maven.compiler.source>
+        <!-- 设置编译器的目标版本为Java 8 -->
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+    
+    <!-- 项目依赖库列表 -->
+    <dependencies>
+        <!-- MySQL JDBC驱动依赖，用于连接MySQL数据库 -->
+        <dependency>
+            <!-- MySQL驱动库的组织ID -->
+            <groupId>mysql</groupId>
+            <!-- MySQL驱动库的标识符 -->
+            <artifactId>mysql-connector-java</artifactId>
+            <!-- MySQL驱动库的版本号，8.0.33是较新的稳定版本 -->
+            <version>8.0.33</version>
+        </dependency>
+    </dependencies>
+    
+    <!-- 构建设置 -->
+    <build>
+        <!-- 构建插件列表 -->
+        <plugins>
+            <!-- Maven编译器插件，用于编译Java源代码 -->
+            <plugin>
+                <!-- 插件的组织ID -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <!-- 插件的标识符 -->
+                <artifactId>maven-compiler-plugin</artifactId>
+                <!-- 插件的版本号 -->
+                <version>3.11.0</version>
+                <!-- 插件的配置参数 -->
+                <configuration>
+                    <!-- 源代码版本 -->
+                    <source>8</source>
+                    <!-- 目标版本 -->
+                    <target>8</target>
+                </configuration>
+            </plugin>
+            
+            <!-- Maven JAR插件，用于配置JAR包的打包信息 -->
+            <plugin>
+                <!-- 插件的组织ID -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <!-- 插件的标识符 -->
+                <artifactId>maven-jar-plugin</artifactId>
+                <!-- 插件的版本号 -->
+                <version>3.3.0</version>
+                <!-- 插件的配置参数 -->
+                <configuration>
+                    <!-- 指定主类，包含main方法的类 -->
+                    <mainClass>com.example.StudentQueryAdvanced</mainClass>
+                </configuration>
+            </plugin>
+            
+            <!-- Maven Shade插件，用于创建包含所有依赖的可执行JAR包 -->
+            <plugin>
+                <!-- 插件的组织ID -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <!-- 插件的标识符 -->
+                <artifactId>maven-shade-plugin</artifactId>
+                <!-- 插件的版本号 -->
+                <version>3.5.0</version>
+                <!-- 插件的执行配置 -->
+                <executions>
+                    <!-- 执行阶段配置 -->
+                    <execution>
+                        <!-- 执行阶段：打包阶段 -->
+                        <phase>package</phase>
+                        <!-- 执行目标 -->
+                        <goals>
+                            <!-- 目标：创建包含所有依赖的JAR包 -->
+                            <goal>shade</goal>
+                        </goals>
+                        <!-- 执行配置 -->
+                        <configuration>
+                            <!-- 创建可执行JAR包 -->
+                            <transformers>
+                                <!-- 添加主清单转换器 -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <!-- 指定主类 -->
+                                    <mainClass>com.example.StudentQueryAdvanced</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    
+</project>
