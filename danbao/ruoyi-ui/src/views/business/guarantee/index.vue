@@ -148,6 +148,8 @@
 </template>
 
 <script>
+import { listGuarantee, getGuarantee, addGuarantee, updateGuarantee, delGuarantee, exportGuarantee } from "@/api/business/guarantee"
+
 export default {
   name: 'Guarantee',
   data() {
@@ -232,75 +234,7 @@ export default {
         guaranteeFeeRate: [
           { required: true, message: '担保费费率不能为空', trigger: 'blur' }
         ]
-      },
-      // 模拟数据
-      mockData: [
-        {
-          id: 1,
-          productName: '投标保函A001',
-          bankName: '工商银行',
-          debtorName: '北京建筑工程有限公司',
-          debtorIdCard: '9111010877255161XY',
-          creditStartDate: '2024-01-01',
-          creditEndDate: '2024-12-31',
-          creditAmount: 5000000.00,
-          guaranteeFeeRate: 0.0150,
-          guaranteeFee: 7500.00,
-          createTime: '2024-01-15 10:30:00'
-        },
-        {
-          id: 2,
-          productName: '履约保函B002',
-          bankName: '建设银行',
-          debtorName: '上海建设集团有限公司',
-          debtorIdCard: '91310000132211563P',
-          creditStartDate: '2024-02-01',
-          creditEndDate: '2025-01-31',
-          creditAmount: 8000000.00,
-          guaranteeFeeRate: 0.0120,
-          guaranteeFee: 9600.00,
-          createTime: '2024-02-10 14:20:00'
-        },
-        {
-          id: 3,
-          productName: '预付款保函C003',
-          bankName: '农业银行',
-          debtorName: '广州贸易发展有限公司',
-          debtorIdCard: '91440101783765823L',
-          creditStartDate: '2024-03-01',
-          creditEndDate: '2024-09-30',
-          creditAmount: 3000000.00,
-          guaranteeFeeRate: 0.0180,
-          guaranteeFee: 8100.00,
-          createTime: '2024-03-05 09:15:00'
-        },
-        {
-          id: 4,
-          productName: '质量保函D004',
-          bankName: '中国银行',
-          debtorName: '深圳科技有限公司',
-          debtorIdCard: '91440300715245678K',
-          creditStartDate: '2024-04-01',
-          creditEndDate: '2026-03-31',
-          creditAmount: 2000000.00,
-          guaranteeFeeRate: 0.0100,
-          guaranteeFee: 4000.00,
-          createTime: '2024-04-12 16:45:00'
-        },
-        {
-          id: 5,
-          productName: '支付保函E005',
-          bankName: '交通银行',
-          debtorName: '成都实业股份有限公司',
-          debtorIdCard: '91510100743623456M',
-          creditStartDate: '2024-05-01',
-          creditEndDate: '2024-11-30',
-          creditAmount: 10000000.00,
-          guaranteeFeeRate: 0.0140,
-          guaranteeFee: 14000.00,
-          createTime: '2024-05-20 11:00:00'
-        }
-      ]
+      }
     }
   },
   computed: {
@@ -319,36 +253,13 @@ export default {
     /** 查询担保业务列表 */
     getList() {
       this.loading = true
-      // 模拟分页和搜索
-      setTimeout(() => {
-        let filteredData = [...this.mockData]
-        
-        // 搜索过滤
-        if (this.queryParams.productName) {
-          filteredData = filteredData.filter(item => 
-            item.productName.includes(this.queryParams.productName)
-          )
-        }
-        if (this.queryParams.bankName) {
-          filteredData = filteredData.filter(item => 
-            item.bankName === this.queryParams.bankName
-          )
-        }
-        if (this.queryParams.debtorName) {
-          filteredData = filteredData.filter(item => 
-            item.debtorName.includes(this.queryParams.debtorName)
-          )
-        }
-        
-        this.total = filteredData.length
-        
-        // 分页
-        const start = (this.queryParams.pageNum - 1) * this.queryParams.pageSize
-        const end = start + this.queryParams.pageSize
-        this.guaranteeList = filteredData.slice(start, end)
-        
+      listGuarantee(this.queryParams).then(response => {
+        this.guaranteeList = response.rows
+        this.total = response.total
         this.loading = false
-      }, 300)
+      }).catch(() => {
+        this.loading = false
+      })
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -358,6 +269,13 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm('queryForm')
+      this.queryParams = {
+        pageNum: 1,
+        pageSize: 10,
+        productName: '',
+        bankName: '',
+        debtorName: ''
+      }
       this.handleQuery()
     },
     /** 多选框选中数据 */
@@ -376,12 +294,11 @@ export default {
     handleUpdate(row) {
       this.reset()
       const id = row.id || this.ids[0]
-      const data = this.mockData.find(item => item.id === id)
-      if (data) {
-        this.form = { ...data }
+      getGuarantee(id).then(response => {
+        this.form = response.data
         this.open = true
         this.title = '编辑担保业务'
-      }
+      })
     },
     /** 删除按钮操作 */
     handleDelete(row) {
@@ -391,68 +308,17 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        // 模拟删除
-        ids.forEach(id => {
-          const index = this.mockData.findIndex(item => item.id === id)
-          if (index > -1) {
-            this.mockData.splice(index, 1)
-          }
+        delGuarantee(ids).then(() => {
+          this.getList()
+          this.$message.success('删除成功')
         })
-        this.getList()
-        this.$message.success('删除成功')
       }).catch(() => {})
     },
     /** 导出按钮操作 */
     handleExport() {
-      // 构建导出数据
-      const exportData = this.guaranteeList.map(item => ({
-        '产品名称': item.productName,
-        '所属银行': item.bankName,
-        '债务人名称': item.debtorName,
-        '债务人证件号': item.debtorIdCard,
-        '主债权起始时间': item.creditStartDate,
-        '主债权到期时间': item.creditEndDate,
-        '主债权金额': item.creditAmount,
-        '担保费费率': (item.guaranteeFeeRate * 100).toFixed(2) + '%',
-        '担保费金额': item.guaranteeFee,
-        '创建时间': item.createTime
-      }))
-      
-      // 生成文件名（含日期）
-      const date = new Date()
-      const dateStr = date.getFullYear() + 
-        String(date.getMonth() + 1).padStart(2, '0') + 
-        String(date.getDate()).padStart(2, '0')
-      const fileName = `担保业务台账_${dateStr}.xlsx`
-      
-      // 使用若依的导出工具（这里简化处理，实际项目使用后端导出）
-      this.downloadExcel(exportData, fileName)
-      this.$message.success('导出成功')
-    },
-    /** 下载Excel文件（简化版） */
-    downloadExcel(data, filename) {
-      // 将数据转换为CSV格式
-      const headers = Object.keys(data[0] || {})
-      const csvContent = [
-        headers.join(','),
-        ...data.map(row => headers.map(h => {
-          const val = row[h]
-          // 处理包含逗号的字段
-          if (typeof val === 'string' && val.includes(',')) {
-            return `"${val}"`
-          }
-          return val
-        }).join(','))
-      ].join('\n')
-      
-      // 创建下载链接
-      const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' })
-      const link = document.createElement('a')
-      link.href = URL.createObjectURL(blob)
-      link.download = filename.replace('.xlsx', '.csv')
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
+      this.download('/business/guarantee/export', {
+        ...this.queryParams
+      }, `担保业务台账_${new Date().getTime()}.xlsx`)
     },
     /** 提交表单 */
     submitForm() {
@@ -461,34 +327,21 @@ export default {
           // 确保担保费已计算
           this.calculateGuaranteeFee()
           
-          const now = new Date()
-          const timeStr = now.getFullYear() + '-' + 
-            String(now.getMonth() + 1).padStart(2, '0') + '-' + 
-            String(now.getDate()).padStart(2, '0') + ' ' + 
-            String(now.getHours()).padStart(2, '0') + ':' + 
-            String(now.getMinutes()).padStart(2, '0') + ':' + 
-            String(now.getSeconds()).padStart(2, '0')
-          
           if (this.form.id) {
-            // 编辑
-            const index = this.mockData.findIndex(item => item.id === this.form.id)
-            if (index > -1) {
-              this.mockData[index] = { ...this.form, updateTime: timeStr }
-            }
-            this.$message.success('修改成功')
+            // 修改
+            updateGuarantee(this.form).then(() => {
+              this.$message.success('修改成功')
+              this.open = false
+              this.getList()
+            })
           } else {
             // 新增
-            const newId = Math.max(...this.mockData.map(item => item.id), 0) + 1
-            this.mockData.push({
-              ...this.form,
-              id: newId,
-              createTime: timeStr
+            addGuarantee(this.form).then(() => {
+              this.$message.success('新增成功')
+              this.open = false
+              this.getList()
             })
-            this.$message.success('新增成功')
           }
-          
-          this.open = false
-          this.getList()
         }
       })
     },

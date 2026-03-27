@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.BizGuaranteeFeeMapper">
+
+    <resultMap type="com.ruoyi.business.domain.BizGuaranteeFee" id="BizGuaranteeFeeResult">
+        <id property="id" column="id"/>
+        <result property="productName" column="product_name"/>
+        <result property="bankName" column="bank_name"/>
+        <result property="debtorName" column="debtor_name"/>
+        <result property="debtorIdCard" column="debtor_id_card"/>
+        <result property="creditStartDate" column="credit_start_date"/>
+        <result property="creditEndDate" column="credit_end_date"/>
+        <result property="creditAmount" column="credit_amount"/>
+        <result property="guaranteeFeeRate" column="guarantee_fee_rate"/>
+        <result property="guaranteeFee" column="guarantee_fee"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectBizGuaranteeFeeVo">
+        select id, product_name, bank_name, debtor_name, debtor_id_card,
+               credit_start_date, credit_end_date, credit_amount, guarantee_fee_rate, guarantee_fee,
+               create_time, update_time, create_by, update_by, remark
+        from biz_guarantee_fee
+    </sql>
+
+    <select id="selectBizGuaranteeFeeList" parameterType="com.ruoyi.business.domain.BizGuaranteeFee"
+            resultMap="BizGuaranteeFeeResult">
+        <include refid="selectBizGuaranteeFeeVo"/>
+        <where>
+            <if test="productName != null and productName != ''">
+                AND product_name like concat('%', #{productName}, '%')
+            </if>
+            <if test="bankName != null and bankName != ''">
+                AND bank_name = #{bankName}
+            </if>
+            <if test="debtorName != null and debtorName != ''">
+                AND debtor_name like concat('%', #{debtorName}, '%')
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectBizGuaranteeFeeById" parameterType="Long" resultMap="BizGuaranteeFeeResult">
+        <include refid="selectBizGuaranteeFeeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBizGuaranteeFee" parameterType="com.ruoyi.business.domain.BizGuaranteeFee"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into biz_guarantee_fee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productName != null and productName != ''">product_name,</if>
+            <if test="bankName != null and bankName != ''">bank_name,</if>
+            <if test="debtorName != null and debtorName != ''">debtor_name,</if>
+            <if test="debtorIdCard != null">debtor_id_card,</if>
+            <if test="creditStartDate != null">credit_start_date,</if>
+            <if test="creditEndDate != null">credit_end_date,</if>
+            <if test="creditAmount != null">credit_amount,</if>
+            <if test="guaranteeFeeRate != null">guarantee_fee_rate,</if>
+            <if test="guaranteeFee != null">guarantee_fee,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productName != null and productName != ''">#{productName},</if>
+            <if test="bankName != null and bankName != ''">#{bankName},</if>
+            <if test="debtorName != null and debtorName != ''">#{debtorName},</if>
+            <if test="debtorIdCard != null">#{debtorIdCard},</if>
+            <if test="creditStartDate != null">#{creditStartDate},</if>
+            <if test="creditEndDate != null">#{creditEndDate},</if>
+            <if test="creditAmount != null">#{creditAmount},</if>
+            <if test="guaranteeFeeRate != null">#{guaranteeFeeRate},</if>
+            <if test="guaranteeFee != null">#{guaranteeFee},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateBizGuaranteeFee" parameterType="com.ruoyi.business.domain.BizGuaranteeFee">
+        update biz_guarantee_fee
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productName != null and productName != ''">product_name = #{productName},</if>
+            <if test="bankName != null and bankName != ''">bank_name = #{bankName},</if>
+            <if test="debtorName != null and debtorName != ''">debtor_name = #{debtorName},</if>
+            <if test="debtorIdCard != null">debtor_id_card = #{debtorIdCard},</if>
+            <if test="creditStartDate != null">credit_start_date = #{creditStartDate},</if>
+            <if test="creditEndDate != null">credit_end_date = #{creditEndDate},</if>
+            <if test="creditAmount != null">credit_amount = #{creditAmount},</if>
+            <if test="guaranteeFeeRate != null">guarantee_fee_rate = #{guaranteeFeeRate},</if>
+            <if test="guaranteeFee != null">guarantee_fee = #{guaranteeFee},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizGuaranteeFeeById" parameterType="Long">
+        delete from biz_guarantee_fee where id = #{id}
+    </delete>
+
+    <delete id="deleteBizGuaranteeFeeByIds">
+        delete from biz_guarantee_fee where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
