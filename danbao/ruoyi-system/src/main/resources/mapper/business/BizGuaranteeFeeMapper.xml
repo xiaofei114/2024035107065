@@ -16,16 +16,12 @@
         <result property="guaranteeFeeRate" column="guarantee_fee_rate"/>
         <result property="guaranteeFee" column="guarantee_fee"/>
         <result property="createTime" column="create_time"/>
-        <result property="updateTime" column="update_time"/>
-        <result property="createBy" column="create_by"/>
-        <result property="updateBy" column="update_by"/>
-        <result property="remark" column="remark"/>
     </resultMap>
 
     <sql id="selectBizGuaranteeFeeVo">
         select id, product_name, bank_name, debtor_name, debtor_id_card,
                credit_start_date, credit_end_date, credit_amount, guarantee_fee_rate, guarantee_fee,
-               create_time, update_time, create_by, update_by, remark
+               create_time
         from biz_guarantee_fee
     </sql>
 
@@ -64,8 +60,6 @@
             <if test="creditAmount != null">credit_amount,</if>
             <if test="guaranteeFeeRate != null">guarantee_fee_rate,</if>
             <if test="guaranteeFee != null">guarantee_fee,</if>
-            <if test="createBy != null">create_by,</if>
-            <if test="remark != null">remark,</if>
             create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -78,8 +72,6 @@
             <if test="creditAmount != null">#{creditAmount},</if>
             <if test="guaranteeFeeRate != null">#{guaranteeFeeRate},</if>
             <if test="guaranteeFee != null">#{guaranteeFee},</if>
-            <if test="createBy != null">#{createBy},</if>
-            <if test="remark != null">#{remark},</if>
             sysdate()
         </trim>
     </insert>
@@ -96,9 +88,6 @@
             <if test="creditAmount != null">credit_amount = #{creditAmount},</if>
             <if test="guaranteeFeeRate != null">guarantee_fee_rate = #{guaranteeFeeRate},</if>
             <if test="guaranteeFee != null">guarantee_fee = #{guaranteeFee},</if>
-            <if test="updateBy != null">update_by = #{updateBy},</if>
-            <if test="remark != null">remark = #{remark},</if>
-            update_time = sysdate()
         </trim>
         where id = #{id}
     </update>
@@ -113,5 +102,41 @@
             #{id}
         </foreach>
     </delete>
+
+    <!-- 统计担保业务总数 -->
+    <select id="countTotalBusiness" resultType="Long">
+        select count(*) from biz_guarantee_fee
+    </select>
+
+    <!-- 统计本月新增担保业务数 -->
+    <select id="countMonthlyNewBusiness" resultType="Long">
+        select count(*) from biz_guarantee_fee
+        where date_format(create_time, '%Y-%m') = date_format(sysdate(), '%Y-%m')
+    </select>
+
+    <!-- 统计担保费总额 -->
+    <select id="sumTotalGuaranteeFee" resultType="Double">
+        select sum(guarantee_fee) from biz_guarantee_fee
+        where guarantee_fee is not null
+    </select>
+
+    <!-- 按银行分组统计担保业务数量 -->
+    <select id="countBusinessByBank" resultType="java.util.Map">
+        select bank_name as name, count(*) as value
+        from biz_guarantee_fee
+        group by bank_name
+        order by value desc
+    </select>
+
+    <!-- 统计近6个月月度担保费 -->
+    <select id="sumMonthlyGuaranteeFee" resultType="java.util.Map">
+        select
+            date_format(create_time, '%Y-%m') as month,
+            sum(guarantee_fee) as amount
+        from biz_guarantee_fee
+        where create_time >= date_sub(sysdate(), interval 5 month)
+        group by date_format(create_time, '%Y-%m')
+        order by month
+    </select>
 
 </mapper>

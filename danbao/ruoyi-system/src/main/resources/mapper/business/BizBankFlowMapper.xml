@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.BizBankFlowMapper">
+
+    <resultMap type="com.ruoyi.business.domain.BizBankFlow" id="BizBankFlowResult">
+        <id property="id" column="id"/>
+        <result property="oppositeName" column="opposite_name"/>
+        <result property="tradeAmount" column="trade_amount"/>
+        <result property="tradeTime" column="trade_time"/>
+        <result property="bankName" column="bank_name"/>
+        <result property="payType" column="pay_type"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="selectBizBankFlowVo">
+        select id, opposite_name, trade_amount, trade_time, bank_name, pay_type,
+               create_time
+        from biz_bank_flow
+    </sql>
+
+    <select id="selectBizBankFlowList" parameterType="com.ruoyi.business.domain.BizBankFlow"
+            resultMap="BizBankFlowResult">
+        <include refid="selectBizBankFlowVo"/>
+        <where>
+            <if test="oppositeName != null and oppositeName != ''">
+                AND opposite_name like concat('%', #{oppositeName}, '%')
+            </if>
+            <if test="bankName != null and bankName != ''">
+                AND bank_name = #{bankName}
+            </if>
+            <if test="payType != null">
+                AND pay_type = #{payType}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectBizBankFlowById" parameterType="Long" resultMap="BizBankFlowResult">
+        <include refid="selectBizBankFlowVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBizBankFlow" parameterType="com.ruoyi.business.domain.BizBankFlow"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into biz_bank_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="oppositeName != null and oppositeName != ''">opposite_name,</if>
+            <if test="tradeAmount != null">trade_amount,</if>
+            <if test="tradeTime != null">trade_time,</if>
+            <if test="bankName != null and bankName != ''">bank_name,</if>
+            <if test="payType != null">pay_type,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="oppositeName != null and oppositeName != ''">#{oppositeName},</if>
+            <if test="tradeAmount != null">#{tradeAmount},</if>
+            <if test="tradeTime != null">#{tradeTime},</if>
+            <if test="bankName != null and bankName != ''">#{bankName},</if>
+            <if test="payType != null">#{payType},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateBizBankFlow" parameterType="com.ruoyi.business.domain.BizBankFlow">
+        update biz_bank_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="oppositeName != null and oppositeName != ''">opposite_name = #{oppositeName},</if>
+            <if test="tradeAmount != null">trade_amount = #{tradeAmount},</if>
+            <if test="tradeTime != null">trade_time = #{tradeTime},</if>
+            <if test="bankName != null and bankName != ''">bank_name = #{bankName},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizBankFlowById" parameterType="Long">
+        delete from biz_bank_flow where id = #{id}
+    </delete>
+
+    <delete id="deleteBizBankFlowByIds">
+        delete from biz_bank_flow where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 统计银行流水总数 -->
+    <select id="countTotalBankFlow" resultType="Long">
+        select count(*) from biz_bank_flow
+    </select>
+
+    <!-- 统计收入总额 -->
+    <select id="sumTotalIncome" resultType="Double">
+        select sum(trade_amount) from biz_bank_flow
+        where pay_type = 1
+    </select>
+
+    <!-- 统计支出总额 -->
+    <select id="sumTotalExpense" resultType="Double">
+        select sum(trade_amount) from biz_bank_flow
+        where pay_type = 0
+    </select>
+
+    <!-- 统计近6个月月度收支数据 -->
+    <select id="sumMonthlyIncomeExpense" resultType="java.util.Map">
+        select
+            date_format(trade_time, '%Y-%m') as month,
+            sum(case when pay_type = 1 then trade_amount else 0 end) as income,
+            sum(case when pay_type = 0 then trade_amount else 0 end) as expense
+        from biz_bank_flow
+        where trade_time >= date_sub(sysdate(), interval 5 month)
+        group by date_format(trade_time, '%Y-%m')
+        order by month
+    </select>
+
+</mapper>

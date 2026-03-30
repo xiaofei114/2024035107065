@@ -57,4 +57,39 @@ public interface BizGuaranteeFeeMapper
      * @return 结果
      */
     public int deleteBizGuaranteeFeeByIds(Long[] ids);
+    
+    /**
+     * 统计担保业务总数
+     * 
+     * @return 业务总数
+     */
+    public Long countTotalBusiness();
+    
+    /**
+     * 统计本月新增担保业务数
+     * 
+     * @return 本月新增业务数
+     */
+    public Long countMonthlyNewBusiness();
+    
+    /**
+     * 统计担保费总额
+     * 
+     * @return 担保费总额
+     */
+    public Double sumTotalGuaranteeFee();
+    
+    /**
+     * 按银行分组统计担保业务数量
+     * 
+     * @return 银行业务数量统计
+     */
+    public List<java.util.Map<String, Object>> countBusinessByBank();
+    
+    /**
+     * 统计近6个月月度担保费
+     * 
+     * @return 月度担保费统计
+     */
+    public List<java.util.Map<String, Object>> sumMonthlyGuaranteeFee();
 }
