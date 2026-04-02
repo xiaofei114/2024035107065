@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.BizReconciliationLogMapper">
+
+    <resultMap type="com.ruoyi.business.domain.BizReconciliationLog" id="BizReconciliationLogResult">
+        <id property="id" column="id"/>
+        <result property="reconciliationId" column="reconciliation_id"/>
+        <result property="operationType" column="operation_type"/>
+        <result property="originalStatus" column="original_status"/>
+        <result property="newStatus" column="new_status"/>
+        <result property="operator" column="operator"/>
+        <result property="operateTime" column="operate_time"/>
+        <result property="operatorIp" column="operator_ip"/>
+    </resultMap>
+
+    <sql id="selectBizReconciliationLogVo">
+        select id, reconciliation_id, operation_type, original_status, 
+               new_status, operator, operate_time, operator_ip
+        from biz_reconciliation_log
+    </sql>
+
+    <select id="selectBizReconciliationLogList" parameterType="com.ruoyi.business.domain.BizReconciliationLog" resultMap="BizReconciliationLogResult">
+        <include refid="selectBizReconciliationLogVo"/>
+        <where>
+            <if test="reconciliationId != null">
+                AND reconciliation_id = #{reconciliationId}
+            </if>
+            <if test="operationType != null and operationType != ''">
+                AND operation_type like concat('%', #{operationType}, '%')
+            </if>
+            <if test="originalStatus != null and originalStatus != ''">
+                AND original_status = #{originalStatus}
+            </if>
+            <if test="newStatus != null and newStatus != ''">
+                AND new_status = #{newStatus}
+            </if>
+            <if test="operator != null and operator != ''">
+                AND operator like concat('%', #{operator}, '%')
+            </if>
+        </where>
+        order by operate_time desc
+    </select>
+
+    <select id="selectBizReconciliationLogById" parameterType="Long" resultMap="BizReconciliationLogResult">
+        <include refid="selectBizReconciliationLogVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectByReconciliationId" parameterType="Long" resultMap="BizReconciliationLogResult">
+        <include refid="selectBizReconciliationLogVo"/>
+        where reconciliation_id = #{reconciliationId}
+        order by operate_time desc
+    </select>
+
+    <insert id="insertBizReconciliationLog" parameterType="com.ruoyi.business.domain.BizReconciliationLog" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_reconciliation_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="reconciliationId != null">reconciliation_id,</if>
+            <if test="operationType != null and operationType != ''">operation_type,</if>
+            <if test="originalStatus != null and originalStatus != ''">original_status,</if>
+            <if test="newStatus != null and newStatus != ''">new_status,</if>
+            <if test="operator != null and operator != ''">operator,</if>
+            <if test="operateTime != null">operate_time,</if>
+            <if test="operatorIp != null and operatorIp != ''">operator_ip,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="reconciliationId != null">#{reconciliationId},</if>
+            <if test="operationType != null and operationType != ''">#{operationType},</if>
+            <if test="originalStatus != null and originalStatus != ''">#{originalStatus},</if>
+            <if test="newStatus != null and newStatus != ''">#{newStatus},</if>
+            <if test="operator != null and operator != ''">#{operator},</if>
+            <if test="operateTime != null">#{operateTime},</if>
+            <if test="operatorIp != null and operatorIp != ''">#{operatorIp},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBizReconciliationLog" parameterType="com.ruoyi.business.domain.BizReconciliationLog">
+        update biz_reconciliation_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reconciliationId != null">reconciliation_id = #{reconciliationId},</if>
+            <if test="operationType != null and operationType != ''">operation_type = #{operationType},</if>
+            <if test="originalStatus != null and originalStatus != ''">original_status = #{originalStatus},</if>
+            <if test="newStatus != null and newStatus != ''">new_status = #{newStatus},</if>
+            <if test="operator != null and operator != ''">operator = #{operator},</if>
+            <if test="operateTime != null">operate_time = #{operateTime},</if>
+            <if test="operatorIp != null and operatorIp != ''">operator_ip = #{operatorIp},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizReconciliationLogById" parameterType="Long">
+        delete from biz_reconciliation_log where id = #{id}
+    </delete>
+
+    <delete id="deleteBizReconciliationLogByIds">
+        delete from biz_reconciliation_log where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

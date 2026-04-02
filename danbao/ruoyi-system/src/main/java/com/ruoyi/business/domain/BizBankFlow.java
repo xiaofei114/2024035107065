@@ -2,6 +2,7 @@ package com.ruoyi.business.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -44,6 +45,9 @@ public class BizBankFlow extends BaseEntity
     /** 支付类型（0=支出，1=收入） */
     @Excel(name = "支付类型", readConverterExp = "0=支出,1=收入")
     private Integer payType;
+    
+    /** 查询参数 */
+    private Map<String, Object> params;
 
     public Long getId()
     {
@@ -108,6 +112,14 @@ public class BizBankFlow extends BaseEntity
     public void setPayType(Integer payType)
     {
         this.payType = payType;
+    }
+
+    public Map<String, Object> getParams() {
+        return params;
+    }
+    
+    public void setParams(Map<String, Object> params) {
+        this.params = params;
     }
 
     @Override

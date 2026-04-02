@@ -76,3 +76,16 @@ export function exportBankFlow(query) {
     responseType: 'blob'
   })
 }
+
+/**
+ * 查询未被绑定的银行流水列表
+ * @param {Object} query 查询参数
+ * @returns {Promise}
+ */
+export function listUnboundBankFlow(query) {
+  return request({
+    url: '/business/bankflow/unbound',
+    method: 'get',
+    params: query
+  })
+}

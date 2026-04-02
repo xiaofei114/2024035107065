@@ -103,4 +103,16 @@ public class BizBankFlowController extends BaseController
     {
         return toAjax(bizBankFlowService.deleteBizBankFlowByIds(ids));
     }
+
+    /**
+     * 查询未被绑定的银行流水列表
+     */
+    @PreAuthorize("@ss.hasPermi('business:bankflow:list')")
+    @GetMapping("/unbound")
+    public TableDataInfo unbound(BizBankFlow bizBankFlow)
+    {
+        startPage();
+        List<BizBankFlow> list = bizBankFlowService.selectUnboundBankFlowList(bizBankFlow);
+        return getDataTable(list);
+    }
 }

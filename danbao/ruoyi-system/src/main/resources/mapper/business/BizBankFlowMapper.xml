@@ -33,6 +33,12 @@
             <if test="payType != null">
                 AND pay_type = #{payType}
             </if>
+            <if test="params != null and params.minAmount != null and params.minAmount != ''">
+                AND trade_amount &gt;= #{params.minAmount}
+            </if>
+            <if test="params != null and params.maxAmount != null and params.maxAmount != ''">
+                AND trade_amount &lt;= #{params.maxAmount}
+            </if>
         </where>
         order by create_time desc
     </select>
@@ -113,6 +119,22 @@
         where trade_time >= date_sub(sysdate(), interval 5 month)
         group by date_format(trade_time, '%Y-%m')
         order by month
+    </select>
+
+    <!-- 查询未被绑定的银行流水列表 -->
+    <select id="selectUnboundBankFlowList" parameterType="com.ruoyi.business.domain.BizBankFlow" resultMap="BizBankFlowResult">
+        <include refid="selectBizBankFlowVo"/>
+        where id not in (select bank_transaction_id from biz_reconciliation where bank_transaction_id is not null and bank_transaction_id > 0)
+        <if test="bankName != null and bankName != ''">
+            AND bank_name = #{bankName}
+        </if>
+        <if test="params != null and params.minAmount != null and params.minAmount != ''">
+            AND trade_amount >= #{params.minAmount}
+        </if>
+        <if test="params != null and params.maxAmount != null and params.maxAmount != ''">
+            AND trade_amount &lt;= #{params.maxAmount}
+        </if>
+        order by trade_time desc
     </select>
 
 </mapper>

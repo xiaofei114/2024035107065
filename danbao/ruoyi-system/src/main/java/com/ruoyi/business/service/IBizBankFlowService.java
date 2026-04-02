@@ -57,4 +57,12 @@ public interface IBizBankFlowService
      * @return 结果
      */
     public int deleteBizBankFlowById(Long id);
+
+    /**
+     * 查询未被绑定的银行流水列表
+     *
+     * @param bizBankFlow 账单台账查询条件
+     * @return 未被绑定的银行流水集合
+     */
+    public List<BizBankFlow> selectUnboundBankFlowList(BizBankFlow bizBankFlow);
 }

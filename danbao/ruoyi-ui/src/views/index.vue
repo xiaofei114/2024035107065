@@ -15,6 +15,7 @@
     margin: 0 0 20px;
     font-size: 17.5px;
     border-left: 5px solid #eee;
+
   }
   hr {
     margin-top: 20px;

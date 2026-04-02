@@ -85,4 +85,12 @@ public interface BizBankFlowMapper
      * @return 月度收支统计
      */
     public List<java.util.Map<String, Object>> sumMonthlyIncomeExpense();
+    
+    /**
+     * 查询未被绑定的银行流水列表
+     * 
+     * @param bizBankFlow 账单台账查询条件
+     * @return 未被绑定的银行流水集合
+     */
+    public List<BizBankFlow> selectUnboundBankFlowList(BizBankFlow bizBankFlow);
 }

@@ -30,6 +30,30 @@
       </div>
     </div>
     
+    <!-- 对账统计面板 -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-icon">📋</div>
+        <div class="stat-number">{{ reconciliationStats.total }}</div>
+        <div class="stat-title">总对账数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-number">{{ reconciliationStats.autoMatched }}</div>
+        <div class="stat-title">自动匹配</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">👤</div>
+        <div class="stat-number">{{ reconciliationStats.manualConfirmed }}</div>
+        <div class="stat-title">人工确认</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⚠️</div>
+        <div class="stat-number">{{ reconciliationStats.needManualConfirm }}</div>
+        <div class="stat-title">待人工确认</div>
+      </div>
+    </div>
+    
     <!-- 图表区域 -->
     <div class="charts-container">
       <div class="chart-item">
@@ -51,6 +75,7 @@
 <script>
 import * as echarts from 'echarts'
 import { getScreenStats, getGuaranteeByBank, getGuaranteeMonthly, getBankFlowMonthly } from "@/api/business/screen"
+import { countReconciliationStatus } from "@/api/business/reconciliation"
 
 export default {
   name: 'BusinessScreen',
@@ -62,6 +87,12 @@ export default {
         monthlyNew: '0',
         totalFee: '¥0',
         totalBankFlow: '¥0'
+      },
+      reconciliationStats: {
+        total: '0',
+        autoMatched: '0',
+        manualConfirmed: '0',
+        needManualConfirm: '0'
       },
       pieChart: null,
       lineChart: null,
@@ -82,6 +113,8 @@ export default {
     async loadData() {
       // 加载统计数据
       await this.loadStats()
+      // 加载对账统计数据
+      await this.loadReconciliationStats()
       // 加载图表数据
       await this.loadChartData()
     },
@@ -99,6 +132,23 @@ export default {
         }
       } catch (error) {
         console.error('加载统计数据失败:', error)
+      }
+    },
+    async loadReconciliationStats() {
+      try {
+        const response = await countReconciliationStatus()
+        if (response.code === 200) {
+          const data = response.data
+          const total = (data['自动匹配'] || 0) + (data['待人工确认'] || 0) + (data['人工确认'] || 0)
+          this.reconciliationStats = {
+            total: total.toString(),
+            autoMatched: (data['自动匹配'] || 0).toString(),
+            manualConfirmed: (data['人工确认'] || 0).toString(),
+            needManualConfirm: (data['待人工确认'] || 0).toString()
+          }
+        }
+      } catch (error) {
+        console.error('加载对账统计数据失败:', error)
       }
     },
     async loadChartData() {

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.business.mapper.BizReconciliationMapper">
+
+    <resultMap type="com.ruoyi.business.domain.BizReconciliation" id="BizReconciliationResult">
+        <id property="id" column="id"/>
+        <result property="guaranteeBusinessId" column="guarantee_business_id"/>
+        <result property="bankTransactionId" column="bank_transaction_id"/>
+        <result property="reconciliationType" column="reconciliation_type"/>
+        <result property="reconciliationStatus" column="reconciliation_status"/>
+        <result property="operator" column="operator"/>
+        <result property="operateTime" column="operate_time"/>
+    </resultMap>
+
+    <sql id="selectBizReconciliationVo">
+        select id, guarantee_business_id, bank_transaction_id, reconciliation_type, 
+               reconciliation_status, operator, operate_time
+        from biz_reconciliation
+    </sql>
+
+    <select id="selectBizReconciliationList" parameterType="com.ruoyi.business.domain.BizReconciliation" resultMap="BizReconciliationResult">
+        select r.id, r.guarantee_business_id, r.bank_transaction_id, r.reconciliation_type, 
+               r.reconciliation_status, r.operator, r.operate_time
+        from biz_reconciliation r
+        left join biz_guarantee_fee g on r.guarantee_business_id = g.id
+        left join biz_bank_flow b on r.bank_transaction_id = b.id
+        <where>
+            <if test="guaranteeBusinessId != null">
+                AND r.guarantee_business_id = #{guaranteeBusinessId}
+            </if>
+            <if test="bankTransactionId != null">
+                AND r.bank_transaction_id = #{bankTransactionId}
+            </if>
+            <if test="reconciliationType != null and reconciliationType != ''">
+                AND r.reconciliation_type = #{reconciliationType}
+            </if>
+            <if test="reconciliationStatus != null and reconciliationStatus != ''">
+                AND r.reconciliation_status = #{reconciliationStatus}
+            </if>
+            <if test="operator != null and operator != ''">
+                AND r.operator like concat('%', #{operator}, '%')
+            </if>
+            <if test="params != null and params.debtorName != null and params.debtorName != ''">
+                AND g.debtor_name like concat('%', #{params.debtorName}, '%')
+            </if>
+            <if test="params != null and params.oppositeName != null and params.oppositeName != ''">
+                AND b.opposite_name like concat('%', #{params.oppositeName}, '%')
+            </if>
+            <if test="params != null and params.bankName != null and params.bankName != ''">
+                AND g.bank_name = #{params.bankName}
+            </if>
+        </where>
+        order by r.operate_time desc
+    </select>
+
+    <select id="selectBizReconciliationById" parameterType="Long" resultMap="BizReconciliationResult">
+        <include refid="selectBizReconciliationVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectByGuaranteeBusinessId" parameterType="Long" resultMap="BizReconciliationResult">
+        <include refid="selectBizReconciliationVo"/>
+        where guarantee_business_id = #{guaranteeBusinessId}
+    </select>
+
+    <select id="selectByBankTransactionId" parameterType="Long" resultMap="BizReconciliationResult">
+        <include refid="selectBizReconciliationVo"/>
+        where bank_transaction_id = #{bankTransactionId}
+    </select>
+
+    <select id="countByStatus" resultType="java.util.Map">
+        select reconciliation_status as status, count(*) as count
+        from biz_reconciliation
+        group by reconciliation_status
+    </select>
+
+    <insert id="insertBizReconciliation" parameterType="com.ruoyi.business.domain.BizReconciliation" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_reconciliation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="guaranteeBusinessId != null">guarantee_business_id,</if>
+            <if test="bankTransactionId != null">bank_transaction_id,</if>
+            <if test="reconciliationType != null and reconciliationType != ''">reconciliation_type,</if>
+            <if test="reconciliationStatus != null and reconciliationStatus != ''">reconciliation_status,</if>
+            <if test="operator != null and operator != ''">operator,</if>
+            <if test="operateTime != null">operate_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="guaranteeBusinessId != null">#{guaranteeBusinessId},</if>
+            <if test="bankTransactionId != null">#{bankTransactionId},</if>
+            <if test="reconciliationType != null and reconciliationType != ''">#{reconciliationType},</if>
+            <if test="reconciliationStatus != null and reconciliationStatus != ''">#{reconciliationStatus},</if>
+            <if test="operator != null and operator != ''">#{operator},</if>
+            <if test="operateTime != null">#{operateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBizReconciliation" parameterType="com.ruoyi.business.domain.BizReconciliation">
+        update biz_reconciliation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="guaranteeBusinessId != null">guarantee_business_id = #{guaranteeBusinessId},</if>
+            <if test="bankTransactionId != null">bank_transaction_id = #{bankTransactionId},</if>
+            <if test="reconciliationType != null and reconciliationType != ''">reconciliation_type = #{reconciliationType},</if>
+            <if test="reconciliationStatus != null and reconciliationStatus != ''">reconciliation_status = #{reconciliationStatus},</if>
+            <if test="operator != null and operator != ''">operator = #{operator},</if>
+            <if test="operateTime != null">operate_time = #{operateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizReconciliationById" parameterType="Long">
+        delete from biz_reconciliation where id = #{id}
+    </delete>
+
+    <delete id="deleteBizReconciliationByIds">
+        delete from biz_reconciliation where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
