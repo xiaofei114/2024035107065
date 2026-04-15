@@ -96,6 +96,11 @@ spring:
         max-active: 8
         # #连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: -1ms
+  # Solr 配置
+  data:
+    solr:
+      # Solr 服务地址
+      host: http://127.0.0.1:8983/solr/cnpatent
 
 # token配置
 token:

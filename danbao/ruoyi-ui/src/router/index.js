@@ -42,6 +42,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/search',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'advanced',
+        component: () => import('@/views/search/advanced'),
+        name: 'AdvancedSearch',
+        meta: { title: '高级检索', icon: 'search' }
+      }
+    ]
+  },
+  {
     path: '/login',
     component: () => import('@/views/login'),
     hidden: true

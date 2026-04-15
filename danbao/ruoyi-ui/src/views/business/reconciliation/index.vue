@@ -132,7 +132,7 @@
         :total="total"
         :page-size="queryParams.pageSize"
         :current-page="queryParams.pageNum"
-        :page-sizes="[10, 20, 50, 100]"
+        :page-sizes="[20, 50, 100]"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -404,9 +404,19 @@ export default {
         })
       })
     },
-    // 导出
+    // 导出Excel
     handleExport() {
-      this.$message.success('导出功能开发中')
+      this.$confirm('确定要导出当前筛选条件下的对账数据吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.download('/business/reconciliation/export', {
+          ...this.queryParams
+        }, `对账列表_${new Date().getTime()}.xlsx`)
+      }).catch(() => {
+        // 取消导出
+      })
     },
     // 分页
     handleSizeChange(size) {

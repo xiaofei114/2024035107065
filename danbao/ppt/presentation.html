@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>担保台账管理系统 - 实训项目汇报</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background: #1a1a2e;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 背景样式 */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: -2;
+        }
+
+        .slide::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        /* 封面页 */
+        .slide-cover {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+        }
+
+        .slide-cover::before {
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.8) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.6) 0%, transparent 50%),
+                linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+        }
+
+        /* 内容页背景 */
+        .slide-content {
+            background: linear-gradient(180deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+        }
+
+        .slide-content::before {
+            background: 
+                radial-gradient(circle at 10% 90%, rgba(102, 126, 234, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 10%, rgba(118, 75, 162, 0.1) 0%, transparent 40%);
+        }
+
+        /* 标题样式 */
+        .main-title {
+            font-size: 72px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: 8px;
+        }
+
+        .subtitle {
+            font-size: 28px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 80px;
+            text-align: center;
+            letter-spacing: 4px;
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            font-size: 20px;
+            color: rgba(255,255,255,0.85);
+            position: absolute;
+            bottom: 80px;
+            left: 80px;
+        }
+
+        .author-info div {
+            display: flex;
+            align-items: center;
+        }
+
+        .author-info span:first-child {
+            width: 80px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .author-info span:last-child {
+            border-bottom: 1px dashed rgba(255,255,255,0.4);
+            padding: 0 20px 2px;
+            min-width: 200px;
+        }
+
+        /* 内容页标题 */
+        .page-title {
+            font-size: 48px;
+            color: #fff;
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        /* 章节标题 */
+        .section-title {
+            font-size: 24px;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        /* 内容卡片 */
+        .content-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* 项目简介内容 */
+        .intro-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .intro-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .intro-item h3 {
+            color: #667eea;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .intro-item p {
+            color: rgba(255,255,255,0.8);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .tech-stack {
+            text-align: left;
+        }
+
+        .tech-stack li {
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .ai-tools li {
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        /* 截图区域 */
+        .screenshot-container {
+            display: flex;
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 30px;
+        }
+
+        .screenshot-box {
+            flex: 1;
+            background: rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .screenshot-placeholder {
+            background: rgba(255,255,255,0.05);
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: 8px;
+            height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .screenshot-placeholder .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .screenshot-placeholder .text {
+            font-size: 14px;
+        }
+
+        .screenshot-label {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* 功能说明列表 */
+        .feature-list {
+            list-style: none;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .feature-list li {
+            color: rgba(255,255,255,0.9);
+            font-size: 18px;
+            margin-bottom: 12px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .feature-highlight {
+            color: #f6e05e;
+            font-weight: bold;
+        }
+
+        /* 公式框 */
+        .formula-box {
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.4);
+            border-radius: 8px;
+            padding: 15px 25px;
+            margin: 15px 0;
+            font-size: 18px;
+            color: #fff;
+            display: inline-block;
+        }
+
+        /* 大屏截图 */
+        .big-screen-container {
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 30px;
+        }
+
+        .big-screen-box {
+            background: rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .big-screen-placeholder {
+            background: rgba(255,255,255,0.05);
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: 8px;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* 总结页 */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .learn-list {
+            list-style: none;
+        }
+
+        .learn-list li {
+            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .learn-list li::before {
+            content: '●';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-size: 10px;
+            top: 5px;
+        }
+
+        .thanks-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .thanks-text {
+            font-size: 28px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .final-text {
+            font-size: 56px;
+            color: #667eea;
+            font-weight: bold;
+            text-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+        }
+
+        /* 页码 */
+        .page-number {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            color: rgba(255,255,255,0.4);
+            font-size: 14px;
+        }
+
+        /* 装饰元素 */
+        .decoration {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .decoration-1 {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            right: -100px;
+        }
+
+        .decoration-2 {
+            width: 200px;
+            height: 200px;
+            bottom: -50px;
+            left: -50px;
+        }
+
+        /* 全屏截图容器 */
+        .full-screenshot {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .full-screenshot .screenshot-placeholder {
+            height: 350px;
+        }
+
+        /* 单列布局 */
+        .single-column {
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .intro-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .screenshot-container {
+                flex-direction: column;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            .slide {
+                page-break-after: always;
+                height: 100vh;
+                width: 100vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 第1页：封面 -->
+    <div class="slide slide-cover">
+        <div class="decoration decoration-1"></div>
+        <div class="decoration decoration-2"></div>
+        
+        <h1 class="main-title">担保台账管理系统</h1>
+        <p class="subtitle">AI辅助全栈开发实训项目</p>
+        
+        <div class="author-info">
+            <div>
+                <span>姓 名：</span>
+                <span>___________</span>
+            </div>
+            <div>
+                <span>班 级：</span>
+                <span>___________</span>
+            </div>
+            <div>
+                <span>日 期：</span>
+                <span>2026年4月3日</span>
+            </div>
+        </div>
+        
+        <div class="page-number">1 / 6</div>
+    </div>
+
+    <!-- 第2页：项目简介 -->
+    <div class="slide slide-content">
+        <h2 class="page-title">项目简介</h2>
+        
+        <div class="intro-grid">
+            <!-- 系统介绍 -->
+            <div class="intro-item">
+                <h3>📋 系统介绍</h3>
+                <p>这是一个管理担保业务和银行流水的Web应用系统</p>
+            </div>
+            
+            <!-- 技术栈 -->
+            <div class="intro-item tech-stack">
+                <h3>🛠️ 技术栈</h3>
+                <ul>
+                    <li>● 后端框架：若依（RuoYi）+ Spring Boot</li>
+                    <li>● 前端框架：Vue2 + Element UI</li>
+                    <li>● 数据库：MySQL</li>
+                    <li>● 开发工具：Trae IDE</li>
+                </ul>
+            </div>
+            
+            <!-- AI工具 -->
+            <div class="intro-item ai-tools">
+                <h3>🤖 AI工具</h3>
+                <p style="text-align:left; margin-bottom: 10px;">使用 Trae AI 助手辅助完成全部开发工作</p>
+                <ul style="text-align:left;">
+                    <li>✓ 数据库设计</li>
+                    <li>✓ 前端页面</li>
+                    <li>✓ 后端接口</li>
+                    <li>✓ 前后端对接</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="page-number">2 / 6</div>
+    </div>
+
+    <!-- 第3页：功能展示 - 担保业务台账 -->
+    <div class="slide slide-content">
+        <h2 class="page-title">功能展示 — 担保业务台账</h2>
+        
+        <div class="screenshot-container">
+            <!-- 左侧截图 -->
+            <div class="screenshot-box">
+                <div class="screenshot-placeholder">
+                    <div class="icon">🖼️</div>
+                    <div class="text">担保台账列表页面截图</div>
+                    <div class="text" style="font-size:12px; margin-top:5px; color:rgba(255,255,255,0.3);">(请替换为实际截图)</div>
+                </div>
+                <p class="screenshot-label">担保台账列表页面</p>
+            </div>
+            
+            <!-- 右侧截图 -->
+            <div class="screenshot-box">
+                <div class="screenshot-placeholder">
+                    <div class="icon">🖼️</div>
+                    <div class="text">新增表单弹窗截图</div>
+                    <div class="text" style="font-size:12px; margin-top:5px; color:rgba(255,255,255,0.3);">(请替换为实际截图)</div>
+                </div>
+                <p class="screenshot-label">新增担保业务表单</p>
+            </div>
+        </div>
+        
+        <ul class="feature-list">
+            <li>支持担保业务的新增、编辑、删除、搜索、导出功能</li>
+            <li>
+                担保费根据公式自动计算：
+                <span class="formula-box">担保费 = 金额 × 费率 × 天数 / 365</span>
+            </li>
+            <li>当前共有 <span class="feature-highlight">_____</span> 条担保业务数据</li>
+        </ul>
+        
+        <div class="page-number">3 / 6</div>
+    </div>
+
+    <!-- 第4页：功能展示 - 账单台账 -->
+    <div class="slide slide-content">
+        <h2 class="page-title">功能展示 — 账单台账</h2>
+        
+        <div class="big-screen-container">
+            <div class="big-screen-box">
+                <div class="big-screen-placeholder">
+                    <div class="icon">🖼️</div>
+                    <div class="text">账单台账列表页面截图</div>
+                    <div class="text" style="font-size:12px; margin-top:5px; color:rgba(255,255,255,0.3);">(请替换为实际截图)</div>
+                </div>
+                <p class="screenshot-label">账单台账列表页面</p>
+            </div>
+        </div>
+        
+        <ul class="feature-list">
+            <li>支持银行流水的新增、编辑、删除、搜索、导出功能</li>
+            <li>记录收入和支出两种类型的交易</li>
+            <li>当前共有 <span class="feature-highlight">_____</span> 条银行流水数据</li>
+        </ul>
+        
+        <div class="page-number">4 / 6</div>
+    </div>
+
+    <!-- 第5页：功能展示 - 业务大屏 -->
+    <div class="slide slide-content">
+        <h2 class="page-title">功能展示 — 业务数据大屏</h2>
+        
+        <div class="big-screen-container full-screenshot">
+            <div class="big-screen-box">
+                <div class="big-screen-placeholder" style="height: 320px;">
+                    <div class="icon">📊</div>
+                    <div class="text">业务大屏完整页面截图</div>
+                    <div class="text" style="font-size:12px; margin-top:5px; color:rgba(255,255,255,0.3);">(建议全屏截图)</div>
+                    <div class="text" style="font-size:12px; margin-top:5px; color:rgba(255,255,255,0.3);">(请替换为实际截图)</div>
+                </div>
+                <p class="screenshot-label">业务数据大屏</p>
+            </div>
+        </div>
+        
+        <ul class="feature-list">
+            <li><strong>担保业务统计：</strong>按银行分布、类型分布进行可视化展示</li>
+            <li><strong>账单流水统计：</strong>收入支出趋势汇总分析</li>
+            <li><strong>关键指标展示：</strong>担保总业务数、担保费总额、收入总额等</li>
+        </ul>
+        
+        <div class="page-number">5 / 6</div>
+    </div>
+
+    <!-- 第6页：总结与致谢 -->
+    <div class="slide slide-content">
+        <h2 class="page-title">总结与致谢</h2>
+        
+        <div class="summary-grid">
+            <!-- 我学到了什么 -->
+            <div class="content-card">
+                <h3 class="section-title">📚 我学到了什么</h3>
+                <ul class="learn-list">
+                    <li>学会了使用AI助手辅助编写代码</li>
+                    <li>了解了前后端分离的开发架构</li>
+                    <li>掌握了数据库表的设计方法</li>
+                    <li>学会了Vue前端页面的基本开发流程</li>
+                    <li>了解了Spring Boot后端接口开发</li>
+                    <li>学会了前后端接口对接的基本方法</li>
+                    <li>掌握了用Git管理代码版本</li>
+                </ul>
+            </div>
+            
+            <!-- 致谢 -->
+            <div class="content-card" style="display: flex; flex-direction: column; justify-content: center;">
+                <h3 class="section-title">🙏 致谢</h3>
+                <p style="color: rgba(255,255,255,0.9); font-size: 20px; margin-bottom: 20px; text-align: center;">
+                    感谢老师的指导！
+                </p>
+                <p style="color: rgba(255,255,255,0.9); font-size: 20px; text-align: center;">
+                    感谢AI助手的帮助！
+                </p>
+                
+                <div class="thanks-section" style="margin-top: auto;">
+                    <p class="final-text">谢谢大家！</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-number">6 / 6</div>
+    </div>
+</body>
+</html>

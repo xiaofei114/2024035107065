@@ -125,6 +125,12 @@
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
+        <!-- Apache SolrJ 客户端 -->
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -1,8 +1,10 @@
 package com.ruoyi.business.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.business.domain.BizReconciliation;
+import com.ruoyi.business.domain.BizReconciliationExportVo;
 import com.ruoyi.business.service.IBizReconciliationService;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -46,11 +49,16 @@ public class BizReconciliationController extends BaseController
      * 导出对账关联表列表
      */
     @PostMapping("/export")
-    public AjaxResult export(BizReconciliation bizReconciliation)
+    public void export(HttpServletResponse response, BizReconciliation bizReconciliation)
     {
         List<BizReconciliation> list = bizReconciliationService.selectBizReconciliationList(bizReconciliation);
-        ExcelUtil<BizReconciliation> util = new ExcelUtil<BizReconciliation>(BizReconciliation.class);
-        return util.exportExcel(list, "对账关联表");
+        List<BizReconciliationExportVo> rows = new ArrayList<>(list.size());
+        for (BizReconciliation item : list)
+        {
+            rows.add(BizReconciliationExportVo.from(item));
+        }
+        ExcelUtil<BizReconciliationExportVo> util = new ExcelUtil<BizReconciliationExportVo>(BizReconciliationExportVo.class);
+        util.exportExcel(response, rows, "对账列表");
     }
 
     /**
