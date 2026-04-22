@@ -115,6 +115,8 @@ public class SecurityConfig
 
                         // Solr 搜索接口允许匿名访问
                         .antMatchers("/api/search/**").permitAll()
+                        // 专利数据管理接口允许匿名访问
+                        .antMatchers("/api/patent/**").permitAll()
 
                         .antMatchers("/test/**").permitAll()
                     // 静态资源，可匿名访问

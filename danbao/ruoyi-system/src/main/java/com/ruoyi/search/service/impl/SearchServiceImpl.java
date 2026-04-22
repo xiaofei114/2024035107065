@@ -79,7 +79,26 @@ public class SearchServiceImpl implements ISearchService
             SolrQuery query = new SolrQuery();
 
             // 设置查询条件：在 title 字段中模糊匹配关键词
-            query.setQuery("title:*" + keyword + "*");
+            // 对于 text_cjk 类型的字段，使用 OR 连接多个词的通配符查询
+            String trimmedKeyword = keyword.trim();
+            String[] words = trimmedKeyword.split("\\s+");
+            
+            if (words.length == 1) {
+                // 单个词，使用简单的通配符查询
+                String escapedKeyword = escapeSpecialChars(words[0]);
+                query.setQuery("title:*" + escapedKeyword + "*");
+            } else {
+                // 多个词，使用 AND 连接每个词的通配符查询（必须同时包含所有词）
+                StringBuilder queryBuilder = new StringBuilder();
+                for (int i = 0; i < words.length; i++) {
+                    if (i > 0) {
+                        queryBuilder.append(" AND ");
+                    }
+                    String escapedWord = escapeSpecialChars(words[i]);
+                    queryBuilder.append("title:*").append(escapedWord).append("*");
+                }
+                query.setQuery(queryBuilder.toString());
+            }
 
             // 设置返回的字段列表
             query.setFields("id", "application_no", "publication_no", "application_date",
@@ -392,6 +411,7 @@ public class SearchServiceImpl implements ISearchService
 
     /**
      * 转义 Solr 查询特殊字符
+     * 支持包含空格的完整标题搜索
      */
     private String escapeSpecialChars(String input)
     {
@@ -400,6 +420,7 @@ public class SearchServiceImpl implements ISearchService
             return input;
         }
         // Solr 特殊字符：+ - && || ! ( ) { } [ ] ^ " ~ * ? : \ /
+        // 注意：空格不转义，因为通配符查询中空格需要保留以支持多词搜索
         String specialChars = "+-&|!(){}[]^\"~*?:\\-/";
         StringBuilder escaped = new StringBuilder();
         for (char c : input.toCharArray())
@@ -719,5 +740,286 @@ public class SearchServiceImpl implements ISearchService
             log.warn("无法从日期字符串提取年份: {}", dateStr);
         }
         return 0;
+    }
+
+    // ==================== 数据管理CRUD实现 ====================
+
+    @Override
+    public SearchItem getById(String id)
+    {
+        try
+        {
+            SolrQuery query = new SolrQuery();
+            query.setQuery("id:" + id);
+            query.setRows(1);
+
+            QueryResponse response = solrClient.query(query);
+            List<SearchItem> items = response.getBeans(SearchItem.class);
+
+            return items.isEmpty() ? null : items.get(0);
+        }
+        catch (SolrServerException | IOException e)
+        {
+            log.error("Solr 根据ID查询文档失败: id={}", id, e);
+            return null;
+        }
+    }
+
+    @Override
+    public boolean add(SearchItem item)
+    {
+        try
+        {
+            // 如果ID为空，生成UUID
+            if (item.getId() == null || item.getId().trim().isEmpty())
+            {
+                item.setId(java.util.UUID.randomUUID().toString());
+            }
+
+            solrClient.addBean(item);
+            solrClient.commit();
+            log.info("Solr 添加文档成功: id={}", item.getId());
+            return true;
+        }
+        catch (SolrServerException | IOException e)
+        {
+            log.error("Solr 添加文档失败", e);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean update(SearchItem item)
+    {
+        try
+        {
+            if (item.getId() == null || item.getId().trim().isEmpty())
+            {
+                log.error("Solr 更新文档失败: ID不能为空");
+                return false;
+            }
+
+            // Solr的更新就是先添加（相同ID会覆盖）
+            solrClient.addBean(item);
+            solrClient.commit();
+            log.info("Solr 更新文档成功: id={}", item.getId());
+            return true;
+        }
+        catch (SolrServerException | IOException e)
+        {
+            log.error("Solr 更新文档失败: id={}", item.getId(), e);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean delete(String id)
+    {
+        try
+        {
+            solrClient.deleteById(id);
+            solrClient.commit();
+            log.info("Solr 删除文档成功: id={}", id);
+            return true;
+        }
+        catch (SolrServerException | IOException e)
+        {
+            log.error("Solr 删除文档失败: id={}", id, e);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteBatch(List<String> ids)
+    {
+        try
+        {
+            solrClient.deleteById(ids);
+            solrClient.commit();
+            log.info("Solr 批量删除文档成功: 数量={}", ids.size());
+            return true;
+        }
+        catch (SolrServerException | IOException e)
+        {
+            log.error("Solr 批量删除文档失败", e);
+            return false;
+        }
+    }
+
+    @Override
+    public SolrSearchResult listPage(String keyword, int pageNum, int pageSize)
+    {
+        try
+        {
+            SolrQuery query = new SolrQuery();
+
+            // 设置查询条件
+            if (keyword != null && !keyword.trim().isEmpty())
+            {
+                query.setQuery("title:*" + escapeSpecialChars(keyword.trim()) + "*");
+            }
+            else
+            {
+                query.setQuery("*:*");
+            }
+
+            // 设置分页
+            query.setStart((pageNum - 1) * pageSize);
+            query.setRows(pageSize);
+
+            // 设置排序：按申请日期倒序
+            query.setSort("application_date", SolrQuery.ORDER.desc);
+
+            // 设置返回字段
+            query.setFields("id", "title", "application_no", "applicant", "application_date",
+                    "type_name", "legaltype", "source");
+
+            // 设置高亮
+            query.setHighlight(true);
+            query.addHighlightField("title");
+            query.setHighlightSimplePre("<em>");
+            query.setHighlightSimplePost("</em>");
+            query.setHighlightFragsize(100);
+
+            log.info("Solr 数据列表查询 - 关键词: {}, 页码: {}, 每页: {}", keyword, pageNum, pageSize);
+
+            QueryResponse response = solrClient.query(query);
+            SolrDocumentList documents = response.getResults();
+
+            // 转换为实体列表
+            List<SearchItem> items = new ArrayList<>();
+            Map<String, Map<String, List<String>>> highlighting = response.getHighlighting();
+
+            for (SolrDocument doc : documents)
+            {
+                SearchItem item = documentToItem(doc);
+
+                // 应用高亮
+                String docId = (String) doc.getFieldValue("id");
+                if (highlighting != null && highlighting.containsKey(docId))
+                {
+                    Map<String, List<String>> docHighlight = highlighting.get(docId);
+                    if (docHighlight != null && docHighlight.containsKey("title"))
+                    {
+                        List<String> titleHighlights = docHighlight.get("title");
+                        if (!titleHighlights.isEmpty())
+                        {
+                            item.setTitle(titleHighlights.get(0));
+                        }
+                    }
+                }
+
+                items.add(item);
+            }
+
+            SolrSearchResult result = new SolrSearchResult();
+            result.setRecords(items);
+            result.setTotal(documents.getNumFound());
+            result.setPageNum(pageNum);
+            result.setPageSize(pageSize);
+
+            return result;
+        }
+        catch (SolrServerException | IOException e)
+        {
+            log.error("Solr 数据列表查询失败", e);
+            SolrSearchResult result = new SolrSearchResult();
+            result.setRecords(new ArrayList<>());
+            result.setTotal(0);
+            result.setPageNum(pageNum);
+            result.setPageSize(pageSize);
+            return result;
+        }
+    }
+
+    /**
+     * 将SolrDocument转换为SearchItem
+     */
+    private SearchItem documentToItem(SolrDocument doc)
+    {
+        SearchItem item = new SearchItem();
+        item.setId((String) doc.getFieldValue("id"));
+        item.setTitle((String) doc.getFieldValue("title"));
+        item.setApplicationNo((String) doc.getFieldValue("application_no"));
+        item.setApplicant((String) doc.getFieldValue("applicant"));
+        item.setApplicationDate((String) doc.getFieldValue("application_date"));
+        item.setTypeName((String) doc.getFieldValue("type_name"));
+        item.setLegalType((String) doc.getFieldValue("legaltype"));
+        item.setSource((String) doc.getFieldValue("source"));
+        return item;
+    }
+
+    // ==================== 数据导入导出实现 ====================
+
+    @Override
+    public List<SearchItem> listAll(String keyword)
+    {
+        try
+        {
+            SolrQuery query = new SolrQuery();
+
+            // 设置查询条件
+            if (keyword != null && !keyword.trim().isEmpty())
+            {
+                query.setQuery("title:*" + escapeSpecialChars(keyword.trim()) + "*");
+            }
+            else
+            {
+                query.setQuery("*:*");
+            }
+
+            // 设置返回所有数据（最多10000条）
+            query.setRows(10000);
+
+            // 设置排序
+            query.setSort("application_date", SolrQuery.ORDER.desc);
+
+            log.info("Solr 导出查询 - 关键词: {}", keyword);
+
+            QueryResponse response = solrClient.query(query);
+            return response.getBeans(SearchItem.class);
+        }
+        catch (SolrServerException | IOException e)
+        {
+            log.error("Solr 导出查询失败", e);
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public int importBatch(List<SearchItem> items)
+    {
+        int successCount = 0;
+        try
+        {
+            for (SearchItem item : items)
+            {
+                // 如果ID为空，生成UUID
+                if (item.getId() == null || item.getId().trim().isEmpty())
+                {
+                    item.setId(java.util.UUID.randomUUID().toString());
+                }
+
+                solrClient.addBean(item);
+                successCount++;
+
+                // 每100条提交一次，避免内存溢出
+                if (successCount % 100 == 0)
+                {
+                    solrClient.commit();
+                    log.info("Solr 批量导入进度: {}/{}", successCount, items.size());
+                }
+            }
+
+            // 提交剩余数据
+            solrClient.commit();
+            log.info("Solr 批量导入完成: 成功导入 {} 条数据", successCount);
+            return successCount;
+        }
+        catch (SolrServerException | IOException e)
+        {
+            log.error("Solr 批量导入失败", e);
+            return successCount;
+        }
     }
 }

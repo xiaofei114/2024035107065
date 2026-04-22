@@ -1,183 +1,101 @@
-2026-04-08 05:51:08.669 INFO  (main) [   ] o.e.j.u.log Logging initialized @813ms to org.eclipse.jetty.util.log.Slf4jLog
-2026-04-08 05:51:08.747 WARN  (main) [   ] o.e.j.x.XmlConfiguration Deprecated method public void org.eclipse.jetty.rewrite.handler.RedirectRegexRule.setReplacement(java.lang.String) in file:///D:/environment/solr_server/server/etc/jetty.xml
-2026-04-08 05:51:08.785 WARN  (main) [   ] o.e.j.s.AbstractConnector Ignoring deprecated socket close linger time
-2026-04-08 05:51:08.785 WARN  (main) [   ] o.e.j.x.XmlConfiguration Deprecated method public void org.eclipse.jetty.server.ServerConnector.setSoLingerTime(int) in file:///D:/environment/solr_server/server/etc/jetty-http.xml
-2026-04-08 05:51:08.790 INFO  (main) [   ] o.e.j.s.Server jetty-9.4.19.v20190610; built: 2019-06-10T16:30:51.723Z; git: afcf563148970e98786327af5e07c261fda175d3; jvm 1.8.0_45-b14
-2026-04-08 05:51:08.805 INFO  (main) [   ] o.e.j.d.p.ScanningAppProvider Deployment monitor [file:///D:/environment/solr_server/server/contexts/] at interval 0
-2026-04-08 05:51:09.208 INFO  (main) [   ] o.e.j.w.StandardDescriptorProcessor NO JSP Support for /solr, did not find org.apache.jasper.servlet.JspServlet
-2026-04-08 05:51:09.215 INFO  (main) [   ] o.e.j.s.session DefaultSessionIdManager workerName=node0
-2026-04-08 05:51:09.215 INFO  (main) [   ] o.e.j.s.session No SessionScavenger set, using defaults
-2026-04-08 05:51:09.217 INFO  (main) [   ] o.e.j.s.session node0 Scavenging every 600000ms
-2026-04-08 05:51:09.258 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter Using logger factory org.apache.logging.slf4j.Log4jLoggerFactory
-2026-04-08 05:51:09.262 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter  ___      _       Welcome to Apache Solr? version 8.4.0
-2026-04-08 05:51:09.262 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter / __| ___| |_ _   Starting in standalone mode on port 8983
-2026-04-08 05:51:09.262 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter \__ \/ _ \ | '_|  Install dir: D:\environment\solr_server
-2026-04-08 05:51:09.264 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter |___/\___/_|_|    Start time: 2026-04-08T05:51:09.264Z
-2026-04-08 05:51:09.280 INFO  (main) [   ] o.a.s.c.SolrResourceLoader Using system property solr.solr.home: D:\environment\solr_server\server\solr
-2026-04-08 05:51:09.286 INFO  (main) [   ] o.a.s.c.SolrXmlConfig Loading container configuration from D:\environment\solr_server\server\solr\solr.xml
-2026-04-08 05:51:09.369 INFO  (main) [   ] o.a.s.c.SolrXmlConfig MBean server found: com.sun.jmx.mbeanserver.JmxMBeanServer@6646153, but no JMX reporters were configured - adding default JMX reporter.
-2026-04-08 05:51:09.583 INFO  (main) [   ] o.a.s.h.c.HttpShardHandlerFactory Host whitelist initialized: WhitelistHostChecker [whitelistHosts=null, whitelistHostCheckingEnabled=true]
-2026-04-08 05:51:09.732 WARN  (main) [   ] o.e.j.u.s.S.config Trusting all certificates configured for Client@6175619b[provider=null,keyStore=null,trustStore=null]
-2026-04-08 05:51:09.732 WARN  (main) [   ] o.e.j.u.s.S.config No Client EndPointIdentificationAlgorithm configured for Client@6175619b[provider=null,keyStore=null,trustStore=null]
-2026-04-08 05:51:09.808 WARN  (main) [   ] o.e.j.u.s.S.config Trusting all certificates configured for Client@6815c5f2[provider=null,keyStore=null,trustStore=null]
-2026-04-08 05:51:09.808 WARN  (main) [   ] o.e.j.u.s.S.config No Client EndPointIdentificationAlgorithm configured for Client@6815c5f2[provider=null,keyStore=null,trustStore=null]
-2026-04-08 05:51:09.820 WARN  (main) [   ] o.a.s.c.CoreContainer Not all security plugins configured!  authentication=disabled authorization=disabled.  Solr is only as secure as you make it. Consider configuring authentication/authorization before exposing Solr to users internal or external.  See https://s.apache.org/solrsecurity for more info
-2026-04-08 05:51:09.910 INFO  (main) [   ] o.a.s.c.TransientSolrCoreCacheDefault Allocating transient cache for 2147483647 transient cores
-2026-04-08 05:51:09.912 INFO  (main) [   ] o.a.s.h.a.MetricsHistoryHandler No .system collection, keeping metrics history in memory.
-2026-04-08 05:51:09.953 INFO  (main) [   ] o.a.s.m.r.SolrJmxReporter JMX monitoring for 'solr.node' (registry 'solr.node') enabled at server: com.sun.jmx.mbeanserver.JmxMBeanServer@6646153
-2026-04-08 05:51:09.953 INFO  (main) [   ] o.a.s.m.r.SolrJmxReporter JMX monitoring for 'solr.jvm' (registry 'solr.jvm') enabled at server: com.sun.jmx.mbeanserver.JmxMBeanServer@6646153
-2026-04-08 05:51:09.956 INFO  (main) [   ] o.a.s.m.r.SolrJmxReporter JMX monitoring for 'solr.jetty' (registry 'solr.jetty') enabled at server: com.sun.jmx.mbeanserver.JmxMBeanServer@6646153
-2026-04-08 05:51:09.990 INFO  (main) [   ] o.a.s.c.CorePropertiesLocator Found 2 core definitions underneath D:\environment\solr_server\server\solr
-2026-04-08 05:51:09.990 INFO  (main) [   ] o.a.s.c.CorePropertiesLocator Cores are: [cnpatent, demo]
-2026-04-08 05:51:10.014 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.c.SolrConfig Using Lucene MatchVersion: 8.4.0
-2026-04-08 05:51:10.033 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.c.SolrResourceLoader [cnpatent] Added 60 libs to classloader, from paths: [/D:/environment/solr_server/contrib/clustering/lib, /D:/environment/solr_server/contrib/extraction/lib, /D:/environment/solr_server/contrib/langid/lib, /D:/environment/solr_server/contrib/velocity/lib, /D:/environment/solr_server/dist]
-2026-04-08 05:51:10.107 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.s.IndexSchema [demo] Schema name=default-config
-2026-04-08 05:51:10.255 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.c.SolrConfig Using Lucene MatchVersion: 7.1.0
-2026-04-08 05:51:10.298 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.s.IndexSchema [cnpatent] Schema name=default-config
-2026-04-08 05:51:10.415 INFO  (main) [   ] o.e.j.s.h.ContextHandler Started o.e.j.w.WebAppContext@101952da{/solr,file:///D:/environment/solr_server/server/solr-webapp/webapp/,AVAILABLE}{D:\environment\solr_server\server/solr-webapp/webapp}
-2026-04-08 05:51:10.421 INFO  (main) [   ] o.e.j.s.AbstractConnector Started ServerConnector@d35dea7{HTTP/1.1,[http/1.1, h2c]}{0.0.0.0:8983}
-2026-04-08 05:51:10.421 INFO  (main) [   ] o.e.j.s.Server Started @2566ms
-2026-04-08 05:51:10.508 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.s.IndexSchema Loaded schema default-config/1.6 with uniqueid field id
-2026-04-08 05:51:10.510 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.s.IndexSchema Loaded schema default-config/1.6 with uniqueid field id
-2026-04-08 05:51:10.535 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.c.CoreContainer Creating SolrCore 'cnpatent' using configuration from instancedir D:\environment\solr_server\server\solr\cnpatent, trusted=true
-2026-04-08 05:51:10.539 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.c.CoreContainer Creating SolrCore 'demo' using configuration from instancedir D:\environment\solr_server\server\solr\demo, trusted=true
-2026-04-08 05:51:10.558 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.m.r.SolrJmxReporter JMX monitoring for 'solr.core.demo' (registry 'solr.core.demo') enabled at server: com.sun.jmx.mbeanserver.JmxMBeanServer@6646153
-2026-04-08 05:51:10.558 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.m.r.SolrJmxReporter JMX monitoring for 'solr.core.cnpatent' (registry 'solr.core.cnpatent') enabled at server: com.sun.jmx.mbeanserver.JmxMBeanServer@6646153
-2026-04-08 05:51:10.572 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.c.SolrCore [[cnpatent] ] Opening new SolrCore at [D:\environment\solr_server\server\solr\cnpatent], dataDir=[D:\environment\solr_server\server\solr\cnpatent\data\]
-2026-04-08 05:51:10.572 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.c.SolrCore [[demo] ] Opening new SolrCore at [D:\environment\solr_server\server\solr\demo], dataDir=[D:\environment\solr_server\server\solr\demo\data\]
-2026-04-08 05:51:10.605 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.r.XSLTResponseWriter xsltCacheLifetimeSeconds=5
-2026-04-08 05:51:10.652 INFO  (qtp568221876-48) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json} status=0 QTime=42
-2026-04-08 05:51:10.950 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
-2026-04-08 05:51:10.950 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
-2026-04-08 05:51:10.950 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
-2026-04-08 05:51:10.950 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
-2026-04-08 05:51:10.979 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.u.CommitTracker Hard AutoCommit: if uncommitted for 15000ms; 
-2026-04-08 05:51:10.979 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.u.CommitTracker Hard AutoCommit: if uncommitted for 15000ms; 
-2026-04-08 05:51:10.979 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.u.CommitTracker Soft AutoCommit: disabled
-2026-04-08 05:51:10.979 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.u.CommitTracker Soft AutoCommit: disabled
-2026-04-08 05:51:11.103 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.s.SolrIndexSearcher Opening [Searcher@a28efac[cnpatent] main]
-2026-04-08 05:51:11.103 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.s.SolrIndexSearcher Opening [Searcher@22f9aad4[demo] main]
-2026-04-08 05:51:11.109 WARN  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.r.ManagedResourceStorage Cannot write to config directory D:\environment\solr_server\server\solr\cnpatent\conf; switching to use InMemory storage instead.
-2026-04-08 05:51:11.109 WARN  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.r.ManagedResourceStorage Cannot write to config directory D:\environment\solr_server\server\solr\demo\conf; switching to use InMemory storage instead.
-2026-04-08 05:51:11.129 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.h.c.SpellCheckComponent Initializing spell checkers
-2026-04-08 05:51:11.129 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.h.c.SpellCheckComponent Initializing spell checkers
-2026-04-08 05:51:11.135 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.s.DirectSolrSpellChecker init: {name=default,field=_text_,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
-2026-04-08 05:51:11.135 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.s.DirectSolrSpellChecker init: {name=default,field=_text_,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
-2026-04-08 05:51:11.142 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.h.ReplicationHandler Replication enabled for following config files: managed-schema,stopwords.txt
-2026-04-08 05:51:11.142 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.h.ReplicationHandler Commits will be reserved for 10000ms.
-2026-04-08 05:51:11.144 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.h.ReplicationHandler Commits will be reserved for 10000ms.
-2026-04-08 05:51:11.155 INFO  (searcherExecutor-11-thread-1-processing-x:demo) [   x:demo] o.a.s.c.QuerySenderListener QuerySenderListener sending requests to Searcher@22f9aad4[demo] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_1(8.4.0):C1:[diagnostics={java.vendor=Oracle Corporation, os=Windows 8.1, java.version=1.8.0_45, java.vm.version=25.45-b02, lucene.version=8.4.0, os.arch=amd64, java.runtime.version=1.8.0_45-b14, source=flush, os.version=6.3, timestamp=1775524393079}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}])))}
-2026-04-08 05:51:11.155 INFO  (searcherExecutor-11-thread-1-processing-x:demo) [   x:demo] o.a.s.c.QuerySenderListener QuerySenderListener done.
-2026-04-08 05:51:11.155 INFO  (searcherExecutor-11-thread-1-processing-x:demo) [   x:demo] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: default
-2026-04-08 05:51:11.157 INFO  (searcherExecutor-10-thread-1-processing-x:cnpatent) [   x:cnpatent] o.a.s.c.QuerySenderListener QuerySenderListener sending requests to Searcher@a28efac[cnpatent] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_2h1(7.1.0):C23599:[diagnostics={os=Windows Server 2012 R2, java.version=1.8.0, os.arch=amd64, java.runtime.version=1.8.0-b132, source=merge, os.version=6.3, java.vendor=Oracle Corporation, java.vm.version=25.0-b70, lucene.version=7.1.0, mergeMaxNumSegments=1, mergeFactor=1, timestamp=1623380298573}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}]) Uninverting(_2h2(7.1.0):C1:[diagnostics={java.vendor=Oracle Corporation, os=Windows Server 2012 R2, java.version=1.8.0_201, java.vm.version=25.201-b09, lucene.version=7.1.0, os.arch=amd64, java.runtime.version=1.8.0_201-b09, source=flush, os.version=6.3, timestamp=1632815450059}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}]) Uninverting(_2h8(8.4.0):C1:[diagnostics={java.vendor=Oracle Corporation, os=Windows 10, java.version=1.8.0_201, java.vm.version=25.201-b09, lucene.version=8.4.0, os.arch=amd64, java.runtime.version=1.8.0_201-b09, source=flush, os.version=10.0, timestamp=1771062529025}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}])))}
-2026-04-08 05:51:11.157 INFO  (searcherExecutor-10-thread-1-processing-x:cnpatent) [   x:cnpatent] o.a.s.c.QuerySenderListener QuerySenderListener done.
-2026-04-08 05:51:11.157 INFO  (searcherExecutor-10-thread-1-processing-x:cnpatent) [   x:cnpatent] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: default
-2026-04-08 05:51:11.159 INFO  (searcherExecutor-10-thread-1-processing-x:cnpatent) [   x:cnpatent] o.a.s.c.SolrCore [cnpatent] Registered new searcher Searcher@a28efac[cnpatent] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_2h1(7.1.0):C23599:[diagnostics={os=Windows Server 2012 R2, java.version=1.8.0, os.arch=amd64, java.runtime.version=1.8.0-b132, source=merge, os.version=6.3, java.vendor=Oracle Corporation, java.vm.version=25.0-b70, lucene.version=7.1.0, mergeMaxNumSegments=1, mergeFactor=1, timestamp=1623380298573}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}]) Uninverting(_2h2(7.1.0):C1:[diagnostics={java.vendor=Oracle Corporation, os=Windows Server 2012 R2, java.version=1.8.0_201, java.vm.version=25.201-b09, lucene.version=7.1.0, os.arch=amd64, java.runtime.version=1.8.0_201-b09, source=flush, os.version=6.3, timestamp=1632815450059}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}]) Uninverting(_2h8(8.4.0):C1:[diagnostics={java.vendor=Oracle Corporation, os=Windows 10, java.version=1.8.0_201, java.vm.version=25.201-b09, lucene.version=8.4.0, os.arch=amd64, java.runtime.version=1.8.0_201-b09, source=flush, os.version=10.0, timestamp=1771062529025}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}])))}
-2026-04-08 05:51:11.159 INFO  (searcherExecutor-11-thread-1-processing-x:demo) [   x:demo] o.a.s.c.SolrCore [demo] Registered new searcher Searcher@22f9aad4[demo] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_1(8.4.0):C1:[diagnostics={java.vendor=Oracle Corporation, os=Windows 8.1, java.version=1.8.0_45, java.vm.version=25.45-b02, lucene.version=8.4.0, os.arch=amd64, java.runtime.version=1.8.0_45-b14, source=flush, os.version=6.3, timestamp=1775524393079}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}])))}
-2026-04-08 06:33:55.368 ERROR (qtp568221876-56) [   x:cnpatent] o.a.s.h.RequestHandlerBase org.apache.solr.common.SolrException: undefined field name
-	at org.apache.solr.schema.IndexSchema.getDynamicFieldType(IndexSchema.java:1306)
-	at org.apache.solr.schema.IndexSchema.getFieldType(IndexSchema.java:1258)
-	at org.apache.solr.parser.SolrQueryParserBase.getWildcardQuery(SolrQueryParserBase.java:1195)
-	at org.apache.solr.parser.SolrQueryParserBase.handleBareTokenQuery(SolrQueryParserBase.java:785)
-	at org.apache.solr.parser.QueryParser.Term(QueryParser.java:421)
-	at org.apache.solr.parser.QueryParser.Clause(QueryParser.java:278)
-	at org.apache.solr.parser.QueryParser.Query(QueryParser.java:162)
-	at org.apache.solr.parser.QueryParser.TopLevelQuery(QueryParser.java:131)
-	at org.apache.solr.parser.SolrQueryParserBase.parse(SolrQueryParserBase.java:260)
-	at org.apache.solr.search.LuceneQParser.parse(LuceneQParser.java:49)
-	at org.apache.solr.search.QParser.getQuery(QParser.java:174)
-	at org.apache.solr.handler.component.QueryComponent.prepare(QueryComponent.java:160)
-	at org.apache.solr.handler.component.SearchHandler.handleRequestBody(SearchHandler.java:302)
-	at org.apache.solr.handler.RequestHandlerBase.handleRequest(RequestHandlerBase.java:211)
-	at org.apache.solr.core.SolrCore.execute(SolrCore.java:2596)
-	at org.apache.solr.servlet.HttpSolrCall.execute(HttpSolrCall.java:799)
-	at org.apache.solr.servlet.HttpSolrCall.call(HttpSolrCall.java:578)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:419)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:351)
-	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1602)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:540)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:146)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:257)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1711)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1347)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:480)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1678)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1249)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)
-	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:220)
-	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:152)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
-	at org.eclipse.jetty.rewrite.handler.RewriteHandler.handle(RewriteHandler.java:335)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
-	at org.eclipse.jetty.server.Server.handle(Server.java:505)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:370)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:267)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:305)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:103)
-	at org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:117)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:781)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:917)
-	at java.lang.Thread.run(Thread.java:745)
-
-2026-04-08 06:33:55.369 INFO  (qtp568221876-56) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=name:*金刚石*&fl=id,name,category,price,brand,description&rows=100&wt=javabin&version=2} status=400 QTime=27
-2026-04-08 06:34:25.616 ERROR (qtp568221876-26) [   x:cnpatent] o.a.s.h.RequestHandlerBase org.apache.solr.common.SolrException: undefined field name
-	at org.apache.solr.schema.IndexSchema.getDynamicFieldType(IndexSchema.java:1306)
-	at org.apache.solr.schema.IndexSchema.getFieldType(IndexSchema.java:1258)
-	at org.apache.solr.parser.SolrQueryParserBase.getWildcardQuery(SolrQueryParserBase.java:1195)
-	at org.apache.solr.parser.SolrQueryParserBase.handleBareTokenQuery(SolrQueryParserBase.java:785)
-	at org.apache.solr.parser.QueryParser.Term(QueryParser.java:421)
-	at org.apache.solr.parser.QueryParser.Clause(QueryParser.java:278)
-	at org.apache.solr.parser.QueryParser.Query(QueryParser.java:162)
-	at org.apache.solr.parser.QueryParser.TopLevelQuery(QueryParser.java:131)
-	at org.apache.solr.parser.SolrQueryParserBase.parse(SolrQueryParserBase.java:260)
-	at org.apache.solr.search.LuceneQParser.parse(LuceneQParser.java:49)
-	at org.apache.solr.search.QParser.getQuery(QParser.java:174)
-	at org.apache.solr.handler.component.QueryComponent.prepare(QueryComponent.java:160)
-	at org.apache.solr.handler.component.SearchHandler.handleRequestBody(SearchHandler.java:302)
-	at org.apache.solr.handler.RequestHandlerBase.handleRequest(RequestHandlerBase.java:211)
-	at org.apache.solr.core.SolrCore.execute(SolrCore.java:2596)
-	at org.apache.solr.servlet.HttpSolrCall.execute(HttpSolrCall.java:799)
-	at org.apache.solr.servlet.HttpSolrCall.call(HttpSolrCall.java:578)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:419)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:351)
-	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1602)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:540)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:146)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:257)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1711)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1347)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:480)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1678)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1249)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)
-	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:220)
-	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:152)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
-	at org.eclipse.jetty.rewrite.handler.RewriteHandler.handle(RewriteHandler.java:335)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
-	at org.eclipse.jetty.server.Server.handle(Server.java:505)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:370)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:267)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:305)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:103)
-	at org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:117)
-	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)
-	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)
-	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)
-	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.produce(EatWhatYouKill.java:132)
-	at org.eclipse.jetty.io.ManagedSelector$$Lambda$244/795594631.run(Unknown Source)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:781)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:917)
-	at java.lang.Thread.run(Thread.java:745)
-
-2026-04-08 06:34:25.616 INFO  (qtp568221876-26) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=name:*手机*&fl=id,name,category,price,brand,description&rows=100&wt=javabin&version=2} status=400 QTime=0
+2026-04-15 05:53:40.229 INFO  (main) [   ] o.e.j.u.log Logging initialized @984ms to org.eclipse.jetty.util.log.Slf4jLog
+2026-04-15 05:53:40.308 WARN  (main) [   ] o.e.j.x.XmlConfiguration Deprecated method public void org.eclipse.jetty.rewrite.handler.RedirectRegexRule.setReplacement(java.lang.String) in file:///D:/study/school/class/danbao/solr_server/server/etc/jetty.xml
+2026-04-15 05:53:40.354 WARN  (main) [   ] o.e.j.s.AbstractConnector Ignoring deprecated socket close linger time
+2026-04-15 05:53:40.354 WARN  (main) [   ] o.e.j.x.XmlConfiguration Deprecated method public void org.eclipse.jetty.server.ServerConnector.setSoLingerTime(int) in file:///D:/study/school/class/danbao/solr_server/server/etc/jetty-http.xml
+2026-04-15 05:53:40.360 INFO  (main) [   ] o.e.j.s.Server jetty-9.4.19.v20190610; built: 2019-06-10T16:30:51.723Z; git: afcf563148970e98786327af5e07c261fda175d3; jvm 1.8.0_45-b14
+2026-04-15 05:53:40.373 INFO  (main) [   ] o.e.j.d.p.ScanningAppProvider Deployment monitor [file:///D:/study/school/class/danbao/solr_server/server/contexts/] at interval 0
+2026-04-15 05:53:40.919 INFO  (main) [   ] o.e.j.w.StandardDescriptorProcessor NO JSP Support for /solr, did not find org.apache.jasper.servlet.JspServlet
+2026-04-15 05:53:40.929 INFO  (main) [   ] o.e.j.s.session DefaultSessionIdManager workerName=node0
+2026-04-15 05:53:40.929 INFO  (main) [   ] o.e.j.s.session No SessionScavenger set, using defaults
+2026-04-15 05:53:40.930 INFO  (main) [   ] o.e.j.s.session node0 Scavenging every 600000ms
+2026-04-15 05:53:40.982 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter Using logger factory org.apache.logging.slf4j.Log4jLoggerFactory
+2026-04-15 05:53:40.985 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter  ___      _       Welcome to Apache Solr? version 8.4.0
+2026-04-15 05:53:40.985 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter / __| ___| |_ _   Starting in standalone mode on port 8983
+2026-04-15 05:53:40.985 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter \__ \/ _ \ | '_|  Install dir: D:\study\school\class\danbao\solr_server
+2026-04-15 05:53:40.986 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter |___/\___/_|_|    Start time: 2026-04-15T05:53:40.986Z
+2026-04-15 05:53:41.003 INFO  (main) [   ] o.a.s.c.SolrResourceLoader Using system property solr.solr.home: D:\study\school\class\danbao\solr_server\server\solr
+2026-04-15 05:53:41.007 INFO  (main) [   ] o.a.s.c.SolrXmlConfig Loading container configuration from D:\study\school\class\danbao\solr_server\server\solr\solr.xml
+2026-04-15 05:53:41.087 INFO  (main) [   ] o.a.s.c.SolrXmlConfig MBean server found: com.sun.jmx.mbeanserver.JmxMBeanServer@6646153, but no JMX reporters were configured - adding default JMX reporter.
+2026-04-15 05:53:41.456 INFO  (main) [   ] o.a.s.h.c.HttpShardHandlerFactory Host whitelist initialized: WhitelistHostChecker [whitelistHosts=null, whitelistHostCheckingEnabled=true]
+2026-04-15 05:53:41.606 WARN  (main) [   ] o.e.j.u.s.S.config Trusting all certificates configured for Client@6175619b[provider=null,keyStore=null,trustStore=null]
+2026-04-15 05:53:41.606 WARN  (main) [   ] o.e.j.u.s.S.config No Client EndPointIdentificationAlgorithm configured for Client@6175619b[provider=null,keyStore=null,trustStore=null]
+2026-04-15 05:53:41.687 WARN  (main) [   ] o.e.j.u.s.S.config Trusting all certificates configured for Client@6815c5f2[provider=null,keyStore=null,trustStore=null]
+2026-04-15 05:53:41.688 WARN  (main) [   ] o.e.j.u.s.S.config No Client EndPointIdentificationAlgorithm configured for Client@6815c5f2[provider=null,keyStore=null,trustStore=null]
+2026-04-15 05:53:41.702 WARN  (main) [   ] o.a.s.c.CoreContainer Not all security plugins configured!  authentication=disabled authorization=disabled.  Solr is only as secure as you make it. Consider configuring authentication/authorization before exposing Solr to users internal or external.  See https://s.apache.org/solrsecurity for more info
+2026-04-15 05:53:41.812 INFO  (main) [   ] o.a.s.c.TransientSolrCoreCacheDefault Allocating transient cache for 2147483647 transient cores
+2026-04-15 05:53:41.814 INFO  (main) [   ] o.a.s.h.a.MetricsHistoryHandler No .system collection, keeping metrics history in memory.
+2026-04-15 05:53:41.862 INFO  (main) [   ] o.a.s.m.r.SolrJmxReporter JMX monitoring for 'solr.node' (registry 'solr.node') enabled at server: com.sun.jmx.mbeanserver.JmxMBeanServer@6646153
+2026-04-15 05:53:41.862 INFO  (main) [   ] o.a.s.m.r.SolrJmxReporter JMX monitoring for 'solr.jvm' (registry 'solr.jvm') enabled at server: com.sun.jmx.mbeanserver.JmxMBeanServer@6646153
+2026-04-15 05:53:41.864 INFO  (main) [   ] o.a.s.m.r.SolrJmxReporter JMX monitoring for 'solr.jetty' (registry 'solr.jetty') enabled at server: com.sun.jmx.mbeanserver.JmxMBeanServer@6646153
+2026-04-15 05:53:41.905 INFO  (main) [   ] o.a.s.c.CorePropertiesLocator Found 2 core definitions underneath D:\study\school\class\danbao\solr_server\server\solr
+2026-04-15 05:53:41.905 INFO  (main) [   ] o.a.s.c.CorePropertiesLocator Cores are: [cnpatent, demo]
+2026-04-15 05:53:41.935 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.c.SolrConfig Using Lucene MatchVersion: 8.4.0
+2026-04-15 05:53:41.943 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.c.SolrResourceLoader [cnpatent] Added 60 libs to classloader, from paths: [/D:/study/school/class/danbao/solr_server/contrib/clustering/lib, /D:/study/school/class/danbao/solr_server/contrib/extraction/lib, /D:/study/school/class/danbao/solr_server/contrib/langid/lib, /D:/study/school/class/danbao/solr_server/contrib/velocity/lib, /D:/study/school/class/danbao/solr_server/dist]
+2026-04-15 05:53:42.059 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.s.IndexSchema [demo] Schema name=default-config
+2026-04-15 05:53:42.211 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.c.SolrConfig Using Lucene MatchVersion: 7.1.0
+2026-04-15 05:53:42.247 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.s.IndexSchema [cnpatent] Schema name=default-config
+2026-04-15 05:53:42.580 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.s.IndexSchema Loaded schema default-config/1.6 with uniqueid field id
+2026-04-15 05:53:42.583 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.s.IndexSchema Loaded schema default-config/1.6 with uniqueid field id
+2026-04-15 05:53:42.637 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.c.CoreContainer Creating SolrCore 'cnpatent' using configuration from instancedir D:\study\school\class\danbao\solr_server\server\solr\cnpatent, trusted=true
+2026-04-15 05:53:42.639 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.c.CoreContainer Creating SolrCore 'demo' using configuration from instancedir D:\study\school\class\danbao\solr_server\server\solr\demo, trusted=true
+2026-04-15 05:53:42.677 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.m.r.SolrJmxReporter JMX monitoring for 'solr.core.demo' (registry 'solr.core.demo') enabled at server: com.sun.jmx.mbeanserver.JmxMBeanServer@6646153
+2026-04-15 05:53:42.677 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.m.r.SolrJmxReporter JMX monitoring for 'solr.core.cnpatent' (registry 'solr.core.cnpatent') enabled at server: com.sun.jmx.mbeanserver.JmxMBeanServer@6646153
+2026-04-15 05:53:42.696 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.c.SolrCore [[cnpatent] ] Opening new SolrCore at [D:\study\school\class\danbao\solr_server\server\solr\cnpatent], dataDir=[D:\study\school\class\danbao\solr_server\server\solr\cnpatent\data\]
+2026-04-15 05:53:42.696 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.c.SolrCore [[demo] ] Opening new SolrCore at [D:\study\school\class\danbao\solr_server\server\solr\demo], dataDir=[D:\study\school\class\danbao\solr_server\server\solr\demo\data\]
+2026-04-15 05:53:42.753 INFO  (main) [   ] o.e.j.s.h.ContextHandler Started o.e.j.w.WebAppContext@101952da{/solr,file:///D:/study/school/class/danbao/solr_server/server/solr-webapp/webapp/,AVAILABLE}{D:\study\school\class\danbao\solr_server\server/solr-webapp/webapp}
+2026-04-15 05:53:42.757 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.r.XSLTResponseWriter xsltCacheLifetimeSeconds=5
+2026-04-15 05:53:42.764 INFO  (main) [   ] o.e.j.s.AbstractConnector Started ServerConnector@d35dea7{HTTP/1.1,[http/1.1, h2c]}{0.0.0.0:8983}
+2026-04-15 05:53:42.764 INFO  (main) [   ] o.e.j.s.Server Started @3520ms
+2026-04-15 05:53:43.242 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
+2026-04-15 05:53:43.242 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
+2026-04-15 05:53:43.242 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
+2026-04-15 05:53:43.242 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
+2026-04-15 05:53:43.265 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.u.CommitTracker Hard AutoCommit: if uncommitted for 15000ms; 
+2026-04-15 05:53:43.265 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.u.CommitTracker Hard AutoCommit: if uncommitted for 15000ms; 
+2026-04-15 05:53:43.265 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.u.CommitTracker Soft AutoCommit: disabled
+2026-04-15 05:53:43.265 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.u.CommitTracker Soft AutoCommit: disabled
+2026-04-15 05:53:43.275 INFO  (qtp568221876-50) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json} status=0 QTime=108
+2026-04-15 05:53:43.398 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.s.SolrIndexSearcher Opening [Searcher@794eb95f[cnpatent] main]
+2026-04-15 05:53:43.398 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.s.SolrIndexSearcher Opening [Searcher@cbe663d[demo] main]
+2026-04-15 05:53:43.409 WARN  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.r.ManagedResourceStorage Cannot write to config directory D:\study\school\class\danbao\solr_server\server\solr\cnpatent\conf; switching to use InMemory storage instead.
+2026-04-15 05:53:43.409 WARN  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.r.ManagedResourceStorage Cannot write to config directory D:\study\school\class\danbao\solr_server\server\solr\demo\conf; switching to use InMemory storage instead.
+2026-04-15 05:53:43.436 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.h.c.SpellCheckComponent Initializing spell checkers
+2026-04-15 05:53:43.436 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.h.c.SpellCheckComponent Initializing spell checkers
+2026-04-15 05:53:43.447 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.s.DirectSolrSpellChecker init: {name=default,field=_text_,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
+2026-04-15 05:53:43.447 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.s.DirectSolrSpellChecker init: {name=default,field=_text_,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
+2026-04-15 05:53:43.457 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.h.ReplicationHandler Replication enabled for following config files: managed-schema,stopwords.txt
+2026-04-15 05:53:43.457 INFO  (coreLoadExecutor-9-thread-2) [   x:demo] o.a.s.h.ReplicationHandler Commits will be reserved for 10000ms.
+2026-04-15 05:53:43.457 INFO  (coreLoadExecutor-9-thread-1) [   x:cnpatent] o.a.s.h.ReplicationHandler Commits will be reserved for 10000ms.
+2026-04-15 05:53:43.471 INFO  (searcherExecutor-10-thread-1-processing-x:demo) [   x:demo] o.a.s.c.QuerySenderListener QuerySenderListener sending requests to Searcher@cbe663d[demo] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_1(8.4.0):C1:[diagnostics={java.vendor=Oracle Corporation, os=Windows 8.1, java.version=1.8.0_45, java.vm.version=25.45-b02, lucene.version=8.4.0, os.arch=amd64, java.runtime.version=1.8.0_45-b14, source=flush, os.version=6.3, timestamp=1775524393079}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}])))}
+2026-04-15 05:53:43.471 INFO  (searcherExecutor-10-thread-1-processing-x:demo) [   x:demo] o.a.s.c.QuerySenderListener QuerySenderListener done.
+2026-04-15 05:53:43.471 INFO  (searcherExecutor-10-thread-1-processing-x:demo) [   x:demo] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: default
+2026-04-15 05:53:43.472 INFO  (searcherExecutor-11-thread-1-processing-x:cnpatent) [   x:cnpatent] o.a.s.c.QuerySenderListener QuerySenderListener sending requests to Searcher@794eb95f[cnpatent] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_2h1(7.1.0):C23599:[diagnostics={os=Windows Server 2012 R2, java.version=1.8.0, os.arch=amd64, java.runtime.version=1.8.0-b132, source=merge, os.version=6.3, java.vendor=Oracle Corporation, java.vm.version=25.0-b70, lucene.version=7.1.0, mergeMaxNumSegments=1, mergeFactor=1, timestamp=1623380298573}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}]) Uninverting(_2h2(7.1.0):C1:[diagnostics={java.vendor=Oracle Corporation, os=Windows Server 2012 R2, java.version=1.8.0_201, java.vm.version=25.201-b09, lucene.version=7.1.0, os.arch=amd64, java.runtime.version=1.8.0_201-b09, source=flush, os.version=6.3, timestamp=1632815450059}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}]) Uninverting(_2h8(8.4.0):C1:[diagnostics={java.vendor=Oracle Corporation, os=Windows 10, java.version=1.8.0_201, java.vm.version=25.201-b09, lucene.version=8.4.0, os.arch=amd64, java.runtime.version=1.8.0_201-b09, source=flush, os.version=10.0, timestamp=1771062529025}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}])))}
+2026-04-15 05:53:43.472 INFO  (searcherExecutor-11-thread-1-processing-x:cnpatent) [   x:cnpatent] o.a.s.c.QuerySenderListener QuerySenderListener done.
+2026-04-15 05:53:43.472 INFO  (searcherExecutor-11-thread-1-processing-x:cnpatent) [   x:cnpatent] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: default
+2026-04-15 05:53:43.477 INFO  (searcherExecutor-10-thread-1-processing-x:demo) [   x:demo] o.a.s.c.SolrCore [demo] Registered new searcher Searcher@cbe663d[demo] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_1(8.4.0):C1:[diagnostics={java.vendor=Oracle Corporation, os=Windows 8.1, java.version=1.8.0_45, java.vm.version=25.45-b02, lucene.version=8.4.0, os.arch=amd64, java.runtime.version=1.8.0_45-b14, source=flush, os.version=6.3, timestamp=1775524393079}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}])))}
+2026-04-15 05:53:43.477 INFO  (searcherExecutor-11-thread-1-processing-x:cnpatent) [   x:cnpatent] o.a.s.c.SolrCore [cnpatent] Registered new searcher Searcher@794eb95f[cnpatent] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_2h1(7.1.0):C23599:[diagnostics={os=Windows Server 2012 R2, java.version=1.8.0, os.arch=amd64, java.runtime.version=1.8.0-b132, source=merge, os.version=6.3, java.vendor=Oracle Corporation, java.vm.version=25.0-b70, lucene.version=7.1.0, mergeMaxNumSegments=1, mergeFactor=1, timestamp=1623380298573}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}]) Uninverting(_2h2(7.1.0):C1:[diagnostics={java.vendor=Oracle Corporation, os=Windows Server 2012 R2, java.version=1.8.0_201, java.vm.version=25.201-b09, lucene.version=7.1.0, os.arch=amd64, java.runtime.version=1.8.0_201-b09, source=flush, os.version=6.3, timestamp=1632815450059}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}]) Uninverting(_2h8(8.4.0):C1:[diagnostics={java.vendor=Oracle Corporation, os=Windows 10, java.version=1.8.0_201, java.vm.version=25.201-b09, lucene.version=8.4.0, os.arch=amd64, java.runtime.version=1.8.0_201-b09, source=flush, os.version=10.0, timestamp=1771062529025}]:[attributes={Lucene50StoredFieldsFormat.mode=BEST_SPEED}])))}
+2026-04-15 05:53:46.079 INFO  (qtp568221876-29) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*手机*&fl=id,application_no,publication_no,application_date,title,abs,applicant,inventor,patent_agency,classification,main_classification,address,type_name,legaltype,source,pdffile&start=0&rows=10&wt=javabin&version=2} hits=25 status=0 QTime=93
+2026-04-15 05:53:46.335 INFO  (qtp568221876-50) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*手机*&facet.limit=20&facet.field=type_name&facet.mincount=1&rows=0&facet=true&wt=javabin&version=2} hits=25 status=0 QTime=38
+2026-04-15 05:53:46.335 INFO  (qtp568221876-27) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*手机*&facet.limit=10&facet.field=regionsecond_s&facet.mincount=1&rows=0&facet=true&wt=javabin&version=2} hits=25 status=0 QTime=37
+2026-04-15 05:53:46.339 INFO  (qtp568221876-28) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*手机*&facet.limit=25&fq=application_date:[2000-01-01T00:00:00Z+TO+2024-12-31T23:59:59Z]&facet.mincount=0&rows=0&facet=true&wt=javabin&version=2} hits=25 status=0 QTime=41
+2026-04-15 05:53:46.355 INFO  (qtp568221876-29) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*手机*&fl=application_date&fq=application_date:[2000-01-01T00:00:00Z+TO+2024-12-31T23:59:59Z]&rows=10000&wt=javabin&version=2} hits=25 status=0 QTime=13
+2026-04-15 05:53:51.576 INFO  (qtp568221876-26) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*人工智能*&facet.limit=25&fq=application_date:[2000-01-01T00:00:00Z+TO+2024-12-31T23:59:59Z]&facet.mincount=0&rows=0&facet=true&wt=javabin&version=2} hits=0 status=0 QTime=20
+2026-04-15 05:53:51.581 INFO  (qtp568221876-50) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*人工智能*&fl=id,application_no,publication_no,application_date,title,abs,applicant,inventor,patent_agency,classification,main_classification,address,type_name,legaltype,source,pdffile&start=0&rows=10&wt=javabin&version=2} hits=0 status=0 QTime=19
+2026-04-15 05:53:51.584 INFO  (qtp568221876-55) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*人工智能*&facet.limit=20&facet.field=type_name&facet.mincount=1&rows=0&facet=true&wt=javabin&version=2} hits=0 status=0 QTime=22
+2026-04-15 05:53:51.584 INFO  (qtp568221876-57) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*人工智能*&facet.limit=10&facet.field=regionsecond_s&facet.mincount=1&rows=0&facet=true&wt=javabin&version=2} hits=0 status=0 QTime=22
+2026-04-15 05:53:51.584 INFO  (qtp568221876-29) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*人工智能*&fl=application_date&fq=application_date:[2000-01-01T00:00:00Z+TO+2024-12-31T23:59:59Z]&rows=10000&wt=javabin&version=2} hits=0 status=0 QTime=4
+2026-04-15 05:53:55.176 INFO  (qtp568221876-53) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*人工*&fl=id,application_no,publication_no,application_date,title,abs,applicant,inventor,patent_agency,classification,main_classification,address,type_name,legaltype,source,pdffile&start=0&rows=10&wt=javabin&version=2} hits=12 status=0 QTime=8
+2026-04-15 05:53:55.472 INFO  (qtp568221876-29) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*人工*&facet.limit=10&facet.field=regionsecond_s&facet.mincount=1&rows=0&facet=true&wt=javabin&version=2} hits=12 status=0 QTime=2
+2026-04-15 05:53:55.475 INFO  (qtp568221876-25) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*人工*&facet.limit=20&facet.field=type_name&facet.mincount=1&rows=0&facet=true&wt=javabin&version=2} hits=12 status=0 QTime=1
+2026-04-15 05:53:55.477 INFO  (qtp568221876-56) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*人工*&facet.limit=25&fq=application_date:[2000-01-01T00:00:00Z+TO+2024-12-31T23:59:59Z]&facet.mincount=0&rows=0&facet=true&wt=javabin&version=2} hits=12 status=0 QTime=2
+2026-04-15 05:53:55.481 INFO  (qtp568221876-29) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*人工*&fl=application_date&fq=application_date:[2000-01-01T00:00:00Z+TO+2024-12-31T23:59:59Z]&rows=10000&wt=javabin&version=2} hits=12 status=0 QTime=3
+2026-04-15 05:54:08.222 INFO  (qtp568221876-53) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*智能*&facet.limit=10&facet.field=regionsecond_s&facet.mincount=1&rows=0&facet=true&wt=javabin&version=2} hits=212 status=0 QTime=3
+2026-04-15 05:54:08.222 INFO  (qtp568221876-54) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*智能*&facet.limit=20&facet.field=type_name&facet.mincount=1&rows=0&facet=true&wt=javabin&version=2} hits=212 status=0 QTime=3
+2026-04-15 05:54:08.225 INFO  (qtp568221876-50) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*智能*&facet.limit=25&fq=application_date:[2000-01-01T00:00:00Z+TO+2024-12-31T23:59:59Z]&facet.mincount=0&rows=0&facet=true&wt=javabin&version=2} hits=211 status=0 QTime=5
+2026-04-15 05:54:08.227 INFO  (qtp568221876-56) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*智能*&fl=id,application_no,publication_no,application_date,title,abs,applicant,inventor,patent_agency,classification,main_classification,address,type_name,legaltype,source,pdffile&start=0&rows=10&wt=javabin&version=2} hits=212 status=0 QTime=8
+2026-04-15 05:54:08.231 INFO  (qtp568221876-27) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*智能*&fl=application_date&fq=application_date:[2000-01-01T00:00:00Z+TO+2024-12-31T23:59:59Z]&rows=10000&wt=javabin&version=2} hits=211 status=0 QTime=4
+2026-04-15 05:54:33.625 INFO  (qtp568221876-50) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*智能*&fl=id,application_no,publication_no,application_date,title,abs,applicant,inventor,patent_agency,classification,main_classification,address,type_name,legaltype,source,pdffile&start=0&rows=10&wt=javabin&version=2} hits=212 status=0 QTime=1
+2026-04-15 05:54:33.940 INFO  (qtp568221876-27) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*智能*&facet.limit=10&facet.field=regionsecond_s&facet.mincount=1&rows=0&facet=true&wt=javabin&version=2} hits=212 status=0 QTime=1
+2026-04-15 05:54:33.944 INFO  (qtp568221876-28) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*智能*&facet.limit=20&facet.field=type_name&facet.mincount=1&rows=0&facet=true&wt=javabin&version=2} hits=212 status=0 QTime=1
+2026-04-15 05:54:33.944 INFO  (qtp568221876-29) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*智能*&facet.limit=25&fq=application_date:[2000-01-01T00:00:00Z+TO+2024-12-31T23:59:59Z]&facet.mincount=0&rows=0&facet=true&wt=javabin&version=2} hits=211 status=0 QTime=1
+2026-04-15 05:54:33.950 INFO  (qtp568221876-56) [   x:cnpatent] o.a.s.c.S.Request [cnpatent]  webapp=/solr path=/select params={q=title:*智能*&fl=application_date&fq=application_date:[2000-01-01T00:00:00Z+TO+2024-12-31T23:59:59Z]&rows=10000&wt=javabin&version=2} hits=211 status=0 QTime=3

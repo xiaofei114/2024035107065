@@ -1,8 +1,10 @@
 package com.ruoyi;
 
+import com.ruoyi.common.config.AiProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 /**
  * 启动程序
@@ -10,6 +12,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  * @author ruoyi
  */
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
+@EnableConfigurationProperties(AiProperties.class)
 public class RuoYiApplication
 {
     public static void main(String[] args)

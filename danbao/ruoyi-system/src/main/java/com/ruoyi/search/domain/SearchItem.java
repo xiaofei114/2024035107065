@@ -78,6 +78,10 @@ public class SearchItem implements Serializable
     @Field("pdffile")
     private String pdfFile;
 
+    /** 权力要求书 */
+    @Field("pat_claim")
+    private String patClaim;
+
     public String getId()
     {
         return id;
@@ -238,6 +242,16 @@ public class SearchItem implements Serializable
         this.pdfFile = pdfFile;
     }
 
+    public String getPatClaim()
+    {
+        return patClaim;
+    }
+
+    public void setPatClaim(String patClaim)
+    {
+        this.patClaim = patClaim;
+    }
+
     @Override
     public String toString()
     {
@@ -258,6 +272,7 @@ public class SearchItem implements Serializable
                 ", legalType='" + legalType + '\'' +
                 ", source='" + source + '\'' +
                 ", pdfFile='" + pdfFile + '\'' +
+                ", patClaim='" + patClaim + '\'' +
                 '}';
     }
 }
